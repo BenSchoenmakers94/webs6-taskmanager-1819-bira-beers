@@ -8,11 +8,4 @@ import { AngularFirestore } from '@angular/fire/firestore';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'bira-web-app';
-
-  public items: Observable<any[]>;
-
-  constructor(db: AngularFirestore) {
-    this.items = db.collection('/users').valueChanges();
-  }
 }
