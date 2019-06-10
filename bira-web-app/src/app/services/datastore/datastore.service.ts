@@ -18,4 +18,8 @@ export class DatastoreService {
   userStoriesForSprint(sprintId) {
     return this.afs.collection('userStories', ref => ref.where('sprintId', '==', sprintId)).valueChanges();
   }
+
+  findUser(userId) {
+    return this.afs.collection('users').doc(userId).valueChanges();
+  }
 }

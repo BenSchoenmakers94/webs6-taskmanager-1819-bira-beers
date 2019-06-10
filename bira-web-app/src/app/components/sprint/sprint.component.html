@@ -1,10 +1,7 @@
 <div *ngIf="userStories | async as stories">
   <mat-list>
     <mat-list-item *ngFor="let story of stories">
-      <mat-card>
-        <mat-card-title>{{story.name}}</mat-card-title>
-        <mat-card-content>{{story.description}}</mat-card-content>
-      </mat-card>
+      <app-user-story [story]=story></app-user-story>
     </mat-list-item>
   </mat-list>
 </div>
