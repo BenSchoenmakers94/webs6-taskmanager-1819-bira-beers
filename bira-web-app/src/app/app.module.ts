@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AngularFireModule } from '@angular/fire';
@@ -11,15 +12,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { AngularMaterialModule } from './angular-material.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserProfileComponent,
-    DashboardComponent
+    DashboardComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    AngularMaterialModule,
     AngularFireModule.initializeApp(environment.firebase, 'BIRA-web-app'),
     AngularFireAuthModule,
     AngularFirestoreModule,
