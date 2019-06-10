@@ -15,10 +15,6 @@
   <div *ngIf="auth.userLogged | async as user">
     <h3>Hello, {{ user.userName }}</h3>
 
-    <h2>Here is your personal data: </h2>
-    <div *ngIf="userData | async as data">
-      <p>{{ data | json }}</p>
-    </div> 
     <app-wizard title="Personal Data" extra="Manage your information" [data]=userData></app-wizard>
     <button (click)="auth.signOut()">Logout</button>
   </div>
