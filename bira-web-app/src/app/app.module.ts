@@ -15,6 +15,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AngularMaterialModule } from './angular-material.module';
+import { WizardComponent } from './components/wizard/wizard.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AngularMaterialModule } from './angular-material.module';
     UserProfileComponent,
     DashboardComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    WizardComponent
   ],
   imports: [
     BrowserModule,

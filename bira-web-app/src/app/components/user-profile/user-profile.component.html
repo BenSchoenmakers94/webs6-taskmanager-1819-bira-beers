@@ -19,6 +19,7 @@
     <div *ngIf="userData | async as data">
       <p>{{ data | json }}</p>
     </div> 
+    <app-wizard title="Personal Data" extra="Manage your information" [data]=userData></app-wizard>
     <button (click)="auth.signOut()">Logout</button>
   </div>
 </ng-template>

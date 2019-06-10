@@ -1,0 +1,17 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{title}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{extra}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div *ngFor="let dataObject of data | async">
+      <mat-form-field>
+        <input matInput placeholder="test">
+      </mat-form-field>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
