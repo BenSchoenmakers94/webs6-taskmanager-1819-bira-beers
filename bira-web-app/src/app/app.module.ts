@@ -16,6 +16,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { WizardComponent } from './components/wizard/wizard.component';
+import { UserStoryComponent } from './components/user-story/user-story.component';
+import { SprintComponent } from './components/sprint/sprint.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { WizardComponent } from './components/wizard/wizard.component';
     DashboardComponent,
     HeaderComponent,
     FooterComponent,
-    WizardComponent
+    WizardComponent,
+    UserStoryComponent,
+    SprintComponent
   ],
   imports: [
     BrowserModule,

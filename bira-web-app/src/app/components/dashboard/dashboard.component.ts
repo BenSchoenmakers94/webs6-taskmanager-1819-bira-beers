@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { DatastoreService } from 'src/app/services/datastore/datastore.service';
+import { AuthService } from 'src/app/services/authentication/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,10 +13,12 @@ export class DashboardComponent implements OnInit {
 
   title = 'bira-web-app';
 
-  public items: Observable<any[]>;
+  public sprints: Observable<any>;
 
-  constructor(db: AngularFirestore) {
-    this.items = db.collection('/users').valueChanges();
+  constructor(auth: AuthService, store: DatastoreService) {
+    auth.userLogged.subscribe(user => {
+      this.sprints = store.sprintsForTeam(user.teamId);
+    });
   }
 
   ngOnInit() {
