@@ -8,6 +8,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { Observable, of } from 'rxjs';
 import { switchMap, timestamp } from 'rxjs/operators';
 import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import { DatastoreService } from '../datastore/datastore.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,19 +25,24 @@ export class AuthService {
   }
 
   private updateUserData(user: any) {
-    const userReference: AngularFirestoreDocument = this.afs.doc(`users/${user.uid}`);
-
-    const documentData = {
-      uid: user.uid,
-      firstName: 'Your first name please?',
-      lastName: 'Your last name please?',
-      description: 'Enter your description here',
-      teams: new Array(),
-      birthDate: new Date(),
-      userName: user.displayName,
-      email: user.email,
-    };
-    return userReference.set(documentData, { merge: true });
+    const existingUserRef = this.store.store.collection('users').doc(user.uid);
+    existingUserRef.get().toPromise().then((docSnapShot) => {
+      if (!docSnapShot.exists) {
+        const userReference: AngularFirestoreDocument = this.afs.doc(`users/${user.uid}`);
+        let name: string;
+        name = user.displayName;
+        const documentData = {
+          uid: user.uid,
+          firstName: name.split(' ')[0],
+          lastName: name.substring(name.indexOf(' ') + 1),
+          description: 'Enter your description here',
+          teamId: '',
+          userName: user.displayName,
+          email: user.email,
+        };
+        return userReference.set(documentData, { merge: true });
+      }
+    });
   }
 
   public async signOut() {
@@ -46,7 +52,8 @@ export class AuthService {
 
   constructor(private afAuth: AngularFireAuth,
               private afs: AngularFirestore,
-              private router: Router) {
+              private router: Router,
+              private store: DatastoreService) {
                 this.userLogged = this.afAuth.authState.pipe(
                   switchMap(user => {
                     if (user) {
