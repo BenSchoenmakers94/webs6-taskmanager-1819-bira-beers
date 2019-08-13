@@ -6,7 +6,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class DatastoreService {
   store: AngularFirestore;
-  constructor(private afs: AngularFirestore,) {
+  constructor(private afs: AngularFirestore) {
       this.store = afs;
    }
 
