@@ -1,25 +1,4 @@
 <mat-accordion class="example-headers-align">
-  <!-- <div *ngFor="let key of iteratableProperties; let i = index">
-        <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" hideToggle>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{key}}
-              </mat-panel-title>
-              <mat-panel-description>
-                Type your {{key}}
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-        
-            <mat-form-field>
-              <input matInput placeholder={{data.{{key}}}}>
-            </mat-form-field>
-            {{data.{{key}}}}
-        
-            <mat-action-row>
-              <button mat-button color="primary" (click)="nextStep()">Next</button>
-            </mat-action-row>
-          </mat-expansion-panel>
-  </div> -->
   <div *ngIf="data | async as object">
       <div *ngFor="let key of getKeys(object); let i = index">
           <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" hideToggle>

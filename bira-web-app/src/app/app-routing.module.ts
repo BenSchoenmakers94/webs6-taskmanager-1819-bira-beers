@@ -7,14 +7,18 @@ import { SprintManagerComponent } from './components/sprint-manager/sprint-manag
 import { UserManagerComponent } from './components/user-manager/user-manager.component';
 import { TeamManagerComponent } from './components/team-manager/team-manager.component';
 import { StoryManagerComponent } from './components/story-manager/story-manager.component';
+import { SignInComponent } from './components/sign-in/sign-in.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: 'profile', component: UserProfileComponent },
+  { path: '', component: SignInComponent },
+  { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'sprints', component: SprintManagerComponent, canActivate: [AuthGuard] },
   { path: 'users', component: UserManagerComponent, canActivate: [AuthGuard] },
   { path: 'teams', component: TeamManagerComponent, canActivate: [AuthGuard] },
   { path: 'backlog', component: StoryManagerComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({

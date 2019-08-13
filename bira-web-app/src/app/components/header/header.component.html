@@ -28,6 +28,14 @@
           </mat-menu>
       </span>
       <span class="example-spacer"></span>
-      <mat-icon [routerLink]="[ '/profile']" class="example-icon" aria-hidden="false" aria-label="Example person icon">person</mat-icon>
+      <div *ngIf="authService.userLogged | async; then authenticated else guest"></div>
+      <ng-template #guest>
+        <span>Try Loggin In!</span>
+        <mat-icon [routerLink]="[ '/']" class="example-icon" aria-hidden="false" aria-label="Example person icon">person_outline</mat-icon>
+      </ng-template>
+      <ng-template #authenticated>
+          <span *ngIf="authService.userLogged | async as user">{{user.userName}} </span>
+          <mat-icon [routerLink]="[ '/profile']" class="example-icon" aria-hidden="false" aria-label="Example person icon">person</mat-icon>
+      </ng-template>
     </mat-toolbar-row>
   </mat-toolbar>

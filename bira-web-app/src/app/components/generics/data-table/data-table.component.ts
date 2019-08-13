@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable } from 'rxjs';
 import { DataSource } from '@angular/cdk/table';
@@ -12,8 +12,6 @@ import { NiceTextService } from 'src/app/services/nice-text.service';
 })
 
 export class DataTableComponent implements OnInit {
-
-  public console = console;
   @Input() type: any;
 
   dataSource: BindableDataSource;
@@ -34,7 +32,7 @@ export class DataTableComponent implements OnInit {
 
 export class BindableDataSource extends DataSource<any> {
 
-  dataSource: Observable<any>;
+  public dataSource: Observable<any>;
 
   constructor(public store: DatastoreService, private type: any) {
   super();

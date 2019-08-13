@@ -1,0 +1,18 @@
+<div *ngIf="authService.userLogged | async; then authenticated else guest"></div>
+      <ng-template #guest>
+          <div class="centered">
+              <mat-card class="centered-object mat-elevation-z4">
+                  <h3>Hello you!</h3>
+                  <p>Take a moment to log in!</p>
+                
+                  <button mat-raised-button color="primary" (click)="authService.googleSignIn()">
+                    <i class="fa fa-google"></i> Log in with Google!
+                  </button>
+              </mat-card>
+          </div>
+      </ng-template>
+      <ng-template #authenticated>
+          <div onload="navToDashboard()"></div>
+      </ng-template>
+
+

@@ -23,6 +23,8 @@ import { UserManagerComponent } from './components/user-manager/user-manager.com
 import { TeamManagerComponent } from './components/team-manager/team-manager.component';
 import { StoryManagerComponent } from './components/story-manager/story-manager.component';
 import { DataTableComponent } from './components/generics/data-table/data-table.component';
+import { SignInComponent } from './components/sign-in/sign-in.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { DataTableComponent } from './components/generics/data-table/data-table.
     UserManagerComponent,
     TeamManagerComponent,
     StoryManagerComponent,
-    DataTableComponent
+    DataTableComponent,
+    SignInComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

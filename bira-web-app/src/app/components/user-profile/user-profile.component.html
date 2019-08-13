@@ -1,22 +1,4 @@
-<div *ngIf="auth.userLogged | async; then authenticated else guest">
-
-</div>
-
-<ng-template #guest>
-  <h3>Hello you!</h3>
-  <p>Take a moment to log in!</p>
-
-  <button (click)="auth.googleSignIn()">
-    <i class="fa fa-google"></i> Log in with Google!
-  </button>
-</ng-template>
-
-<ng-template #authenticated>
-  <div *ngIf="auth.userLogged | async as user">
-    <h3>Hello, {{ user.userName }}</h3>
 
     <app-wizard title="Personal Data" extra="Manage your information" [data]=userData></app-wizard>
-    <button (click)="auth.signOut()">Logout</button>
-  </div>
-</ng-template>
+    <button mat-raised-button color="primary" (click)="auth.signOut()">Logout</button>
 
