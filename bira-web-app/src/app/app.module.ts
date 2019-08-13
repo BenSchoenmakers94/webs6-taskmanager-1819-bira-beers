@@ -22,6 +22,7 @@ import { SprintManagerComponent } from './components/sprint-manager/sprint-manag
 import { UserManagerComponent } from './components/user-manager/user-manager.component';
 import { TeamManagerComponent } from './components/team-manager/team-manager.component';
 import { StoryManagerComponent } from './components/story-manager/story-manager.component';
+import { DataTableComponent } from './components/generics/data-table/data-table.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { StoryManagerComponent } from './components/story-manager/story-manager.
     SprintManagerComponent,
     UserManagerComponent,
     TeamManagerComponent,
-    StoryManagerComponent
+    StoryManagerComponent,
+    DataTableComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,7 @@ import { StoryManagerComponent } from './components/story-manager/story-manager.
     AngularMaterialModule,
     AngularFireModule.initializeApp(environment.firebase, 'BIRA-web-app'),
     AngularFireAuthModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireStorageModule,
     AppRoutingModule
   ],

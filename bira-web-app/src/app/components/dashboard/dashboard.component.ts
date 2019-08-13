@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { DatastoreService } from 'src/app/services/datastore/datastore.service';
-import { AuthService } from 'src/app/services/authentication/auth.service';
 
 @Component({
   selector: 'app-dashboard',

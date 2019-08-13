@@ -1,5 +1,9 @@
 <app-header></app-header>
-<div class="content">
-    <router-outlet></router-outlet>
-</div>
+<mat-card [ngClass]="{'content': true, 'mat-elevation-z24': true}">
+    <mat-card-header>
+    </mat-card-header>
+    <mat-card-content>
+        <router-outlet></router-outlet>
+    </mat-card-content>
+</mat-card>
 <app-footer class="footer"></app-footer>

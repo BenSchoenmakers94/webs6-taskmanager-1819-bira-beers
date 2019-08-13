@@ -22,4 +22,8 @@ export class DatastoreService {
   findUser(userId) {
     return this.afs.collection('users').doc(userId).valueChanges();
   }
+
+  getAllFromType(type: any) {
+    return this.afs.collection(type).valueChanges();
+  }
 }
