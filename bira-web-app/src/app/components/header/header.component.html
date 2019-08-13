@@ -6,21 +6,24 @@
           </button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item>
-              <mat-icon>dialpad</mat-icon>
-              <span>Redial</span>
-            </button>
-            <button mat-menu-item disabled>
-              <mat-icon>voicemail</mat-icon>
-              <span>Check voicemail</span>
+              <mat-icon>whatshot</mat-icon>
+              <span>Dashboard</span>
             </button>
             <button mat-menu-item>
-              <mat-icon>notifications_off</mat-icon>
-              <span>Disable alerts</span>
+              <mat-icon>directions_run</mat-icon>
+              <span>Sprints</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>storage</mat-icon>
+              <span>Backlog</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>group</mat-icon>
+              <span>Users</span>
             </button>
           </mat-menu>
       </span>
       <span class="example-spacer"></span>
-      <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
-      <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon>
+      <mat-icon [routerLink]="[ '/profile']" class="example-icon" aria-hidden="false" aria-label="Example person icon">person</mat-icon>
     </mat-toolbar-row>
   </mat-toolbar>

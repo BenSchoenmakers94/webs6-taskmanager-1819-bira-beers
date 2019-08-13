@@ -12,4 +12,7 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
   }
 
+  goToAvans(): void {
+    window.open('https://avans.nl', '_blank');
+}
 }
