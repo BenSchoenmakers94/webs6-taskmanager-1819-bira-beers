@@ -18,6 +18,10 @@ import { AngularMaterialModule } from './angular-material.module';
 import { WizardComponent } from './components/wizard/wizard.component';
 import { UserStoryComponent } from './components/user-story/user-story.component';
 import { SprintComponent } from './components/sprint/sprint.component';
+import { SprintManagerComponent } from './components/sprint-manager/sprint-manager.component';
+import { UserManagerComponent } from './components/user-manager/user-manager.component';
+import { TeamManagerComponent } from './components/team-manager/team-manager.component';
+import { StoryManagerComponent } from './components/story-manager/story-manager.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,11 @@ import { SprintComponent } from './components/sprint/sprint.component';
     FooterComponent,
     WizardComponent,
     UserStoryComponent,
-    SprintComponent
+    SprintComponent,
+    SprintManagerComponent,
+    UserManagerComponent,
+    TeamManagerComponent,
+    StoryManagerComponent
   ],
   imports: [
     BrowserModule,

@@ -13,12 +13,7 @@ export class DashboardComponent implements OnInit {
 
   title = 'bira-web-app';
 
-  public sprints: Observable<any>;
-
-  constructor(auth: AuthService, store: DatastoreService) {
-    auth.userLogged.subscribe(user => {
-      this.sprints = store.sprintsForTeam(user.teamId);
-    });
+  constructor() {
   }
 
   ngOnInit() {
