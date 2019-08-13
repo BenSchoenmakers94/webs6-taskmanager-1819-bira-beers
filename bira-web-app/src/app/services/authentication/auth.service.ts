@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { auth } from 'firebase/app';
-import { User } from '../../models/user';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
@@ -15,7 +14,7 @@ import { Timestamp } from 'rxjs/internal/operators/timestamp';
 })
 export class AuthService {
 
-  userLogged: Observable<User>;
+  userLogged: Observable<any>;
 
   public async googleSignIn() {
     const provider = new auth.GoogleAuthProvider();
@@ -24,7 +23,7 @@ export class AuthService {
   }
 
   private updateUserData(user: any) {
-    const userReference: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+    const userReference: AngularFirestoreDocument = this.afs.doc(`users/${user.uid}`);
 
     const documentData = {
       uid: user.uid,
@@ -50,7 +49,7 @@ export class AuthService {
                 this.userLogged = this.afAuth.authState.pipe(
                   switchMap(user => {
                     if (user) {
-                      return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+                      return this.afs.doc(`users/${user.uid}`).valueChanges();
                     } else {
                       return of(null);
                     }

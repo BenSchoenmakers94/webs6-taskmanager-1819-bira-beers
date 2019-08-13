@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/authentication/auth.service';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { User } from 'src/app/models/user';
+import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -11,12 +11,12 @@ import { User } from 'src/app/models/user';
 })
 export class UserProfileComponent implements OnInit {
 
-  public userData: Observable<User>;
+  public userData: Observable<any>;
 
-  constructor(public auth: AuthService, db: AngularFirestore) {
+  constructor(public auth: AuthService, store: DatastoreService) {
     this.auth.userLogged.subscribe(user => {
       if (user) {
-        this.userData = db.collection('users').doc<User>(user.uid).valueChanges();
+        this.userData = store.findUser(user.uid);
       }
     });
   }
