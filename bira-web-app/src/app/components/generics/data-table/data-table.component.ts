@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable } from 'rxjs';
 import { DataSource } from '@angular/cdk/table';
@@ -13,9 +13,10 @@ import { NiceTextService } from 'src/app/services/nice-text.service';
 
 export class DataTableComponent implements OnInit {
   @Input() type: any;
+  @Output() selectionChanged: EventEmitter<any> = new EventEmitter();
 
   dataSource: BindableDataSource;
-  displayedColumns: any[]
+  displayedColumns: any[];
   constructor(public store: DatastoreService, public textify: NiceTextService) { }
 
   ngOnInit() {
@@ -27,6 +28,10 @@ export class DataTableComponent implements OnInit {
     this.dataSource.connect().pipe(first()).subscribe(object => {
       this.displayedColumns = Object.getOwnPropertyNames(object[0]);
     });
+  }
+
+  setSelected(row: any) {
+    this.selectionChanged.emit(row);
   }
 }
 

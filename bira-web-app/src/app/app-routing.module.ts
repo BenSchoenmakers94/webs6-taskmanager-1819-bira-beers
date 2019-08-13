@@ -9,14 +9,15 @@ import { TeamManagerComponent } from './components/team-manager/team-manager.com
 import { StoryManagerComponent } from './components/story-manager/story-manager.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { DataManagerComponent } from './components/generics/data-manager/data-manager.component';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
   { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
-  { path: 'sprints', component: SprintManagerComponent, canActivate: [AuthGuard] },
-  { path: 'users', component: UserManagerComponent, canActivate: [AuthGuard] },
-  { path: 'teams', component: TeamManagerComponent, canActivate: [AuthGuard] },
-  { path: 'backlog', component: StoryManagerComponent, canActivate: [AuthGuard] },
+  { path: 'sprints', component: DataManagerComponent, canActivate: [AuthGuard] },
+  { path: 'users', component: DataManagerComponent, canActivate: [AuthGuard] },
+  { path: 'teams', component: DataManagerComponent, canActivate: [AuthGuard] },
+  { path: 'userStories', component: DataManagerComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: '**', component: PageNotFoundComponent },
 ];

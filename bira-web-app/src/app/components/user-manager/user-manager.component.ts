@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 
 @Component({
   selector: 'app-user-manager',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserManagerComponent implements OnInit {
 
-  constructor() { }
+  public selectedObservable: any;
+
+
+  constructor(private store: DatastoreService) { }
 
   ngOnInit() {
   }
 
+  selectionChangedHandler(selected: any) {
+    //this.selectedItem = selected;
+    console.log(selected);
+  }
 }

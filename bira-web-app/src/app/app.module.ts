@@ -25,6 +25,8 @@ import { StoryManagerComponent } from './components/story-manager/story-manager.
 import { DataTableComponent } from './components/generics/data-table/data-table.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { DataDetailComponent } from './components/generics/data-detail/data-detail.component';
+import { DataManagerComponent } from './components/generics/data-manager/data-manager.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     StoryManagerComponent,
     DataTableComponent,
     SignInComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    DataDetailComponent,
+    DataManagerComponent
   ],
   imports: [
     BrowserModule,

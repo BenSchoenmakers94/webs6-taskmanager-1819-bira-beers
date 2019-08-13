@@ -26,4 +26,8 @@ export class DatastoreService {
   getAllFromType(type: any) {
     return this.afs.collection(type).valueChanges();
   }
+
+  findObjectOfType(type: any, objectId: any) {
+    return this.afs.collection(type).doc(objectId).valueChanges();
+  }
 }

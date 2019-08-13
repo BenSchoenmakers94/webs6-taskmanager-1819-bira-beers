@@ -1,0 +1,12 @@
+<div class="relative min-height">
+    <app-data-table *ngIf="type" [type]="type" (selectionChanged)="selectionChangedHandler($event)"></app-data-table>
+    <div class="spacing" *ngIf="selectedObservable | async as object">
+      <app-data-detail [selectedObject]="object"></app-data-detail>
+    </div>
+    <button class="positioned" mat-raised-button color="accent">
+        <mat-icon>add</mat-icon>
+        Create new {{type}}
+    </button>
+</div>
+
+
