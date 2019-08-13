@@ -33,4 +33,10 @@ export class NiceTextService {
     }
     return textNice;
   }
+
+  getNiceTextList(notSoNiceList: string[]): any[] {
+    let returnList =[];
+    notSoNiceList.forEach(item => returnList[notSoNiceList.indexOf(item)] = this.getNiceText(item));
+    return returnList;
+  }
 }

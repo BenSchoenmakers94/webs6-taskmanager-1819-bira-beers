@@ -3,6 +3,7 @@ import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable } from 'rxjs';
 import { DataSource } from '@angular/cdk/table';
 import { first } from 'rxjs/operators';
+import { NiceTextService } from 'src/app/services/nice-text.service';
 
 @Component({
   selector: 'app-data-table',
@@ -16,8 +17,8 @@ export class DataTableComponent implements OnInit {
   @Input() type: any;
 
   dataSource: BindableDataSource;
-  displayedColumns: any[];
-  constructor(public store: DatastoreService) { }
+  displayedColumns: any[]
+  constructor(public store: DatastoreService, public textify: NiceTextService) { }
 
   ngOnInit() {
     this.dataSource = new BindableDataSource(this.store, this.type);
@@ -27,7 +28,6 @@ export class DataTableComponent implements OnInit {
   getColumns() {
     this.dataSource.connect().pipe(first()).subscribe(object => {
       this.displayedColumns = Object.getOwnPropertyNames(object[0]);
-      this.console.log(this.displayedColumns)
     });
   }
 }
@@ -41,7 +41,7 @@ export class BindableDataSource extends DataSource<any> {
   }
 
   connect() {
-    this.dataSource = this.store.getAllFromType(this.type)
+    this.dataSource = this.store.getAllFromType(this.type);
     return this.dataSource;
   }
 
