@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
+import { NiceTextService } from 'src/app/services/nice-text.service';
 
 @Component({
   selector: 'app-create',
@@ -21,7 +22,8 @@ export class CreateComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private store: DatastoreService,
-    private snackbar: MatSnackBar) { }
+    private snackbar: MatSnackBar,
+    private textify: NiceTextService) { }
 
   ngOnInit() {
     this.route.parent.url.subscribe(url => {
@@ -40,8 +42,9 @@ export class CreateComponent implements OnInit {
   onSave() {
     if (this.nrOfProps === this.Object.getOwnPropertyNames(this.saveableObject).length) {
       this.store.upsertDocument(this.type, this.saveableObject, this.objectId);
+      this.snackbar.open('You created a new ' + this.textify.getSingular(this.type) + '!', 'OK', {duration: 2000});
    } else {
-      this.snackbar.open("Please fill out all properties!", "OK", {duration: 2000});
-  }
+      this.snackbar.open('Please fill out all properties!', 'OK', {duration: 2000});
+    }
   }
 }

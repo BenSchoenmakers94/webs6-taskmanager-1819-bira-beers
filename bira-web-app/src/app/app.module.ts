@@ -49,7 +49,7 @@ import { EditComponent } from './components/generics/edit/edit.component';
     AngularMaterialModule,
     AngularFireModule.initializeApp(environment.firebase, 'BIRA-web-app'),
     AngularFireAuthModule,
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
     AngularFireStorageModule,
     AppRoutingModule
   ],

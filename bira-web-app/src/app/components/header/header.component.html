@@ -41,7 +41,7 @@
         </mat-menu>
       </ng-template>
       <ng-template #authenticated>
-          <span *ngIf="authService.userLogged | async as user">{{user.userName}} </span>
+          <span *ngIf="authService.userLogged | async as user">{{user.name}} </span>
           <button mat-icon-button [matMenuTriggerFor]="menuAuth">
             <mat-icon>person</mat-icon>
           </button>

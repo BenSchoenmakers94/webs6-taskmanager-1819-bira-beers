@@ -11,7 +11,6 @@ export class DatastoreService {
    }
 
   sprintsForTeam(teamId) {
-    // return this.afs.collection('sprints').valueChanges();
     return this.afs.collection('sprints', ref => ref.where('teamId', '==', teamId)).valueChanges();
   }
 
@@ -36,7 +35,7 @@ export class DatastoreService {
   }
 
   getObjectFromId(objectId: string) {
-    let type =  objectId.substring(0, objectId.lastIndexOf('Id')) + 's';
+    const type =  objectId.substring(0, objectId.lastIndexOf('Id')) + 's';
     return this.afs.collection(type).doc(objectId).valueChanges();
   }
 
@@ -48,8 +47,9 @@ export class DatastoreService {
     if (objectId) {
       this.updateDocument(type, objectId, saveableObject);
     } else {
-      let newId = this.afs.createId();
-      saveableObject['uid'] = newId;
+      const newId = this.afs.createId();
+      const copy = JSON.parse(JSON.stringify(saveableObject));
+      copy.uid = newId;
       this.afs.collection(type).doc(newId).set(saveableObject);
     }
   }

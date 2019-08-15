@@ -20,8 +20,17 @@ export class AuthService {
   public async googleSignIn() {
     const provider = new auth.GoogleAuthProvider();
     const credentials = await this.afAuth.auth.signInWithPopup(provider);
+    this.updateUserData(credentials.user);
+    this.userLogged = this.afAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          return this.afs.doc(`users/${user.uid}`).valueChanges();
+        } else {
+          return of(null);
+        }
+      })
+    );
     this.router.navigateByUrl('/dashboard');
-    return this.updateUserData(credentials.user);
   }
 
   private updateUserData(user: any) {

@@ -35,7 +35,7 @@ export class DataTableComponent implements OnInit {
   }
 
   goToDetail(row: any) {
-    this.router.navigateByUrl(this.router.url + row.uid);
+    this.router.navigateByUrl(this.router.url + '/' + row.uid);
   }
 }
 

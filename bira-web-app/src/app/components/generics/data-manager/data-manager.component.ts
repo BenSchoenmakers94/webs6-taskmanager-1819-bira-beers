@@ -14,7 +14,7 @@ export class DataManagerComponent implements OnInit {
   public type: any;
 
   constructor(
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit() {
