@@ -31,11 +31,28 @@
       <div *ngIf="authService.userLogged | async; then authenticated else guest"></div>
       <ng-template #guest>
         <span>Try Loggin In!</span>
-        <mat-icon [routerLink]="[ '/']" class="example-icon" aria-hidden="false" aria-label="Example person icon">person_outline</mat-icon>
+        <button mat-icon-button [matMenuTriggerFor]="menuGuest">
+          <mat-icon>person_outline</mat-icon>
+        </button>
+        <mat-menu #menuGuest="matMenu">
+          <button [routerLink]="[ '/']" mat-menu-item>
+            <span>Sign in</span>
+          </button>
+        </mat-menu>
       </ng-template>
       <ng-template #authenticated>
           <span *ngIf="authService.userLogged | async as user">{{user.userName}} </span>
-          <mat-icon [routerLink]="[ '/profile']" class="example-icon" aria-hidden="false" aria-label="Example person icon">person</mat-icon>
+          <button mat-icon-button [matMenuTriggerFor]="menuAuth">
+            <mat-icon>person</mat-icon>
+          </button>
+          <mat-menu #menuAuth="matMenu">
+              <button [routerLink]="[ '/profile']" mat-menu-item>
+                <span>My Profile</span>
+              </button>
+            <button (click)="authService.signOut()" mat-menu-item>
+              <span>Sign out</span>
+            </button>
+          </mat-menu>
       </ng-template>
     </mat-toolbar-row>
   </mat-toolbar>

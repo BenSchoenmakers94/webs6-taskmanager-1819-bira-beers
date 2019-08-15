@@ -17,11 +17,13 @@ export class AppComponent implements AfterViewChecked  {
   }
 
   ngAfterViewChecked() {
+   setTimeout(() => {
     this.title = '';
     const parts = this.route.url.split('/');
     parts.reverse();
     parts.pop();
     parts.forEach(part => this.title += this.textify.getNiceText(part) + ' - ');
     this.title = this.title.substring(0, this.title.lastIndexOf(' -'));
+   })
   }
 }

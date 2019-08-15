@@ -1,6 +1,49 @@
-<mat-card class="mat-elevation-z8" *ngIf="selectedObject">
+<mat-card class="max-size mat-elevation-z8" *ngIf="displayedProperty">
     <mat-card-header>
-        <mat-card-title>Details for: {{ selectedObject.uid }}</mat-card-title>
+        <mat-card-title>{{textify.getNiceNameForId(displayedProperty)}}</mat-card-title>
     </mat-card-header>
-    <h1>Bla</h1>
+    <ng-container *ngIf="editable; then edit; else viewOnly"></ng-container>
+    <ng-template class="centered" #edit>
+            <ng-template [ngIf]="inputType == 'string'">
+                    <form class="example-form">
+                        <mat-form-field class="example-full-width">
+                            <input matInput (input)="onChange($event.target)" placeholder="Fill out {{textify.getNiceNameForId(displayedProperty)}}" value={{selectedObject?.displayedProperty}}>
+                        </mat-form-field>
+                    </form>
+            </ng-template>
+            <ng-template [ngIf]="inputType === 'number'">
+                    <mat-label>Select the amount of {{textify.getNiceNameForId(displayedProperty)}}</mat-label>
+                    <br>
+                    <mat-slider
+                            thumbLabel
+                            [displayWith]="formatLabel"
+                            tickInterval="1"
+                            min="1"
+                            max="20"
+                            (change)="onChange($event)">
+                    </mat-slider>
+                    <br>
+                    <mat-label>Current {{textify.getNiceNameForId(displayedProperty)}}: {{selectedValue}} </mat-label>
+            </ng-template>
+            <ng-template [ngIf]="inputType == 'one'">
+                <div *ngIf="collection | async as items">
+                        <form class="example-form">
+                                <mat-label>Choose {{textify.getNiceNameForId(displayedProperty)}}</mat-label>
+                                <mat-select [(value)]="selectedValue">
+                                  <mat-option *ngFor="let item of items" value={{item.uid}}>{{item.name}}</mat-option>
+                                </mat-select>
+                            </form>
+                </div>  
+            </ng-template>
+            <ng-template [ngIf]="inputType == 'date'">
+                    <mat-form-field>
+                            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+            </ng-template>
+    </ng-template>
+    <ng-template #viewOnly>
+        <h1>{{selectedObject?.displayedProperty}}</h1>
+    </ng-template>
 </mat-card>

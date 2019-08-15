@@ -39,4 +39,12 @@ export class NiceTextService {
     notSoNiceList.forEach(item => returnList[notSoNiceList.indexOf(item)] = this.getNiceText(item));
     return returnList;
   }
+
+  getNiceNameForId(propertyId: string) {
+    return propertyId.lastIndexOf('Id') > 0 ? this.getNiceText(propertyId.substring(0, propertyId.lastIndexOf('Id'))) : this.getNiceText(propertyId);
+  }
+
+  getTypeForId(propertyId: string) {
+    return propertyId.substring(0, propertyId.lastIndexOf('Id')) + 's';
+  }
 }

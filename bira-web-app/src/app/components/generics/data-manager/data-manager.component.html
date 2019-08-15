@@ -1,12 +1,18 @@
-<div class="relative min-height">
-    <app-data-table *ngIf="type" [type]="type" (selectionChanged)="selectionChangedHandler($event)"></app-data-table>
-    <div class="spacing" *ngIf="selectedObservable | async as object">
-      <app-data-detail [selectedObject]="object"></app-data-detail>
+<ng-container *ngIf="route.children.length === 0; then activeParent; else activeChild"></ng-container>
+<ng-template #activeChild>
+  <router-outlet></router-outlet>
+</ng-template>
+<ng-template #activeParent>
+    <div class="relative min-height">
+        <app-data-table *ngIf="type" [type]="type" (selectionChanged)="selectionChangedHandler($event)"></app-data-table>
+        <div class="spacing" *ngIf="selectedObservable | async as object">
+        </div>
+        <button (click)="goToCreation()" class="positioned" mat-raised-button color="accent">
+            <mat-icon>add</mat-icon>
+            Create new {{type}}
+        </button>
     </div>
-    <button class="positioned" mat-raised-button color="accent">
-        <mat-icon>add</mat-icon>
-        Create new {{type}}
-    </button>
-</div>
+</ng-template>
+
 
 

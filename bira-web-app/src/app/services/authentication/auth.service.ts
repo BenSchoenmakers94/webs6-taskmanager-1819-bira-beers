@@ -37,7 +37,7 @@ export class AuthService {
           lastName: name.substring(name.indexOf(' ') + 1),
           description: 'Enter your description here',
           teamId: '',
-          userName: user.displayName,
+          name: user.displayName,
           email: user.email,
         };
         return userReference.set(documentData, { merge: true });
