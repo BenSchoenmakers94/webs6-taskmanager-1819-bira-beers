@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { DataSource } from '@angular/cdk/table';
 import { first } from 'rxjs/operators';
 import { NiceTextService } from 'src/app/services/nice-text.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-data-table',
@@ -17,7 +18,10 @@ export class DataTableComponent implements OnInit {
 
   dataSource: BindableDataSource;
   displayedColumns: any[];
-  constructor(public store: DatastoreService, public textify: NiceTextService) { }
+  constructor(
+    public store: DatastoreService,
+    public textify: NiceTextService,
+    private router: Router) { }
 
   ngOnInit() {
     this.dataSource = new BindableDataSource(this.store, this.type);
@@ -30,8 +34,8 @@ export class DataTableComponent implements OnInit {
     });
   }
 
-  setSelected(row: any) {
-    this.selectionChanged.emit(row);
+  goToDetail(row: any) {
+    this.router.navigateByUrl(this.router.url + row.uid);
   }
 }
 

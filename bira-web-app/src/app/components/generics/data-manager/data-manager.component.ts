@@ -12,12 +12,9 @@ import { NiceTextService } from 'src/app/services/nice-text.service';
 export class DataManagerComponent implements OnInit {
 
   public type: any;
-  public selectedObservable: Observable<any>;
 
   constructor(
-    private store: DatastoreService,
     private route: ActivatedRoute,
-    private textify: NiceTextService,
     private router: Router) { }
 
   ngOnInit() {
@@ -26,11 +23,7 @@ export class DataManagerComponent implements OnInit {
     });
   }
 
-  selectionChangedHandler(selected: any) {
-   this.selectedObservable = this.store.findObjectOfType(this.type, selected.uid);
-  }
-
   goToCreation() {
-    this.router.navigateByUrl('/' + this.type + '/add')
+    this.router.navigateByUrl('/' + this.type + '/add');
   }
 }

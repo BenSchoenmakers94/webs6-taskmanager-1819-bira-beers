@@ -23,6 +23,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { DataDetailComponent } from './components/generics/data-detail/data-detail.component';
 import { DataManagerComponent } from './components/generics/data-manager/data-manager.component';
 import { CreateComponent } from './components/generics/create/create.component';
+import { EditComponent } from './components/generics/edit/edit.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { CreateComponent } from './components/generics/create/create.component';
     PageNotFoundComponent,
     DataDetailComponent,
     DataManagerComponent,
-    CreateComponent
+    CreateComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,

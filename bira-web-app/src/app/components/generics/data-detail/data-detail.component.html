@@ -1,4 +1,4 @@
-<mat-card class="max-size mat-elevation-z8" *ngIf="displayedProperty">
+<mat-card class="max-size mat-elevation-z12" *ngIf="displayedProperty">
     <mat-card-header>
         <mat-card-title>{{textify.getNiceNameForId(displayedProperty)}}</mat-card-title>
     </mat-card-header>
@@ -30,7 +30,7 @@
                         <form class="example-form">
                                 <mat-label>Choose {{textify.getNiceNameForId(displayedProperty)}}</mat-label>
                                 <mat-select [(value)]="selectedValue">
-                                  <mat-option *ngFor="let item of items" value={{item.uid}}>{{item.name}}</mat-option>
+                                  <mat-option *ngFor="let item of items" value={{item.uid}}><b>{{item.name}}</b></mat-option>
                                 </mat-select>
                             </form>
                 </div>  

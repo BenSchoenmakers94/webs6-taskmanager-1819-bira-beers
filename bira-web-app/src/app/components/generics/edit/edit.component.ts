@@ -1,22 +1,21 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
-import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.sass']
+  selector: 'app-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.sass']
 })
-export class CreateComponent implements OnInit {
+export class EditComponent implements OnInit {
 
   @Input() objectId?: any;
   public Object = Object;
   public properties: Observable<any>;
   private saveableObject: any = {};
   private type: any;
-  private nrOfProps: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,12 +23,10 @@ export class CreateComponent implements OnInit {
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    //type/1
     this.route.parent.url.subscribe(url => {
       this.type = url[0].path;
       this.properties = this.store.getPropertiesOfType(this.type);
-      this.properties.subscribe(props => {
-        this.nrOfProps = this.Object.getOwnPropertyNames(props).length;
-      });
     });
   }
 
@@ -38,10 +35,6 @@ export class CreateComponent implements OnInit {
   }
 
   onSave() {
-    if (this.nrOfProps === this.Object.getOwnPropertyNames(this.saveableObject).length) {
-      this.store.upsertDocument(this.type, this.saveableObject, this.objectId);
-   } else {
-      this.snackbar.open("Please fill out all properties!", "OK", {duration: 2000});
-  }
+    this.store.upsertDocument(this.type, this.saveableObject, this.objectId);
   }
 }

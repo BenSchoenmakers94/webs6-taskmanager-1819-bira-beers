@@ -1,0 +1,11 @@
+<div *ngIf="properties | async as list">
+  <mat-grid-list cols="3" rowHeight="3:1">
+      <mat-grid-tile *ngFor="let property of Object.getOwnPropertyNames(list); index as i">
+          <app-data-detail class="property-sizing" [inputType]="list[property]" [editable]="true" [displayedProperty]="property" (stateChange)="stateChangedHandler($event)"></app-data-detail>
+      </mat-grid-tile>
+  </mat-grid-list>
+  <button (click)="onSave()" class="positioned" mat-raised-button color="accent">
+      <mat-icon>add</mat-icon>
+      Save
+  </button>
+</div>

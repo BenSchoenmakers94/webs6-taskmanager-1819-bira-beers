@@ -12,9 +12,9 @@ export class DataDetailComponent implements OnInit, DoCheck {
 
   @Input() selectedObject?: any;
   @Input() displayedProperty: any;
-  @Input() editable?: boolean =  false;
+  @Input() editable =  false;
   @Input() inputType?: any;
-  @Output() stateChange?: EventEmitter<any> = new EventEmitter(); 
+  @Output() stateChange?: EventEmitter<any> = new EventEmitter();
 
   public collection: Observable<any>;
   public selectedValue: any;
@@ -31,7 +31,7 @@ export class DataDetailComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-    if (this.selectedValue && this.previousSelectedValue != this.selectedValue) {
+    if (this.selectedValue && this.previousSelectedValue !== this.selectedValue) {
       this.previousSelectedValue = this.selectedValue;
       this.stateHasChanged(this.selectedValue);
     }
@@ -42,10 +42,10 @@ export class DataDetailComponent implements OnInit, DoCheck {
   }
 
   stateHasChanged(valueChanged: any) {
-    let emittable = {
-      'property': this.displayedProperty,
-      'value': valueChanged
-    }
+    const emittable = {
+      property: this.displayedProperty,
+      value: valueChanged
+    };
     this.stateChange.emit(emittable);
   }
 }
