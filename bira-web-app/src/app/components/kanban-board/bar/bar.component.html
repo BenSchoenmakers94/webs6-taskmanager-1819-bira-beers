@@ -1,0 +1,15 @@
+<mat-grid-list cols={{columnList.length}} rowHeight="2:1">
+  <ng-container *ngFor="let property of columnList; index as i">
+    <ng-container *ngIf="checkSelected(moveableObject[columnProperty], property); then thenTemplate; else elseTemplate"></ng-container>
+    <ng-template #thenTemplate>
+      <mat-grid-tile>
+        <h3>YES {{i}}</h3>
+    </mat-grid-tile>
+    </ng-template>
+    <ng-template #elseTemplate>
+        <mat-grid-tile>
+            <h3>TEST {{i}}</h3>
+        </mat-grid-tile>
+    </ng-template>
+  </ng-container>
+</mat-grid-list>

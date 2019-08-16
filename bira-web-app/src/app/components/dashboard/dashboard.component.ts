@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DatastoreService } from 'src/app/services/datastore/datastore.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,12 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  title = 'bira-web-app';
+  public columnType: Observable<any>;
+  public moveables: Observable<any>;
 
-  constructor() {
+  constructor(private store: DatastoreService) {
   }
 
   ngOnInit() {
+    this.columnType = this.store.getAllFromTypeSorted('states', 'sort');
+    this.moveables = this.store.getAllFromType('userStories');
   }
 
 }

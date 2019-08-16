@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable } from 'rxjs';
 import { DataSource } from '@angular/cdk/table';
-import { first } from 'rxjs/operators';
 import { NiceTextService } from 'src/app/services/nice-text.service';
 import { Router } from '@angular/router';
 
@@ -12,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./data-table.component.sass']
 })
 
-export class DataTableComponent implements OnInit, AfterViewChecked {
+export class DataTableComponent implements OnInit {
   @Input() type: any;
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter();
 

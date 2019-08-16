@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Query } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
@@ -24,6 +24,10 @@ export class DatastoreService {
 
   getAllFromType(type: any) {
     return this.afs.collection(type).valueChanges();
+  }
+
+  getAllFromTypeSorted(type: any, property: any) {
+    return this.afs.collection(type, ref => ref.orderBy(property)).valueChanges();
   }
 
   findObjectOfType(type: any, objectId: any) {

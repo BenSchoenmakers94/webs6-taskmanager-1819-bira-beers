@@ -24,6 +24,9 @@ import { DataDetailComponent } from './components/generics/data-detail/data-deta
 import { DataManagerComponent } from './components/generics/data-manager/data-manager.component';
 import { CreateComponent } from './components/generics/create/create.component';
 import { EditComponent } from './components/generics/edit/edit.component';
+import { ChartComponent } from './components/chart/chart.component';
+import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
+import { BarComponent } from './components/kanban-board/bar/bar.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,10 @@ import { EditComponent } from './components/generics/edit/edit.component';
     DataDetailComponent,
     DataManagerComponent,
     CreateComponent,
-    EditComponent
+    EditComponent,
+    ChartComponent,
+    KanbanBoardComponent,
+    BarComponent
   ],
   imports: [
     BrowserModule,
