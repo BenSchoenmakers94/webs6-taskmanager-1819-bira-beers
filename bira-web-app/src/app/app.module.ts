@@ -27,6 +27,7 @@ import { EditComponent } from './components/generics/edit/edit.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 import { BarComponent } from './components/kanban-board/bar/bar.component';
+import { NgDragDropModule } from 'ng-drag-drop';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,9 @@ import { BarComponent } from './components/kanban-board/bar/bar.component';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgDragDropModule.forRoot()
+
   ],
   providers: [],
   bootstrap: [AppComponent]

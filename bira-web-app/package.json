@@ -25,6 +25,7 @@
     "core-js": "^2.5.4",
     "firebase": "^5.10.0",
     "hammerjs": "^2.0.8",
+    "ng-drag-drop": "^5.0.0",
     "node-pre-gyp": "^0.13.0",
     "node-sass": "^4.12.0",
     "rxjs": "~6.3.3",
