@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/authentication/auth.service';
 
@@ -13,7 +13,7 @@ export class SignInComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  
   navToDashboard() {
     this.router.navigateByUrl('/dashboard');
   }

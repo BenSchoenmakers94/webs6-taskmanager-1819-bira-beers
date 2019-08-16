@@ -8,6 +8,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { DataManagerComponent } from './components/generics/data-manager/data-manager.component';
 import { CreateComponent } from './components/generics/create/create.component';
 import { EditComponent } from './components/generics/edit/edit.component';
+import { AvailableAssetGuard } from './guards/available-asset/available-asset.guard';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
@@ -30,7 +31,7 @@ const routes: Routes = [
   { path: 'userStories', component: DataManagerComponent, canActivate: [AuthGuard],
   children: [
     { path: 'add', component: CreateComponent, canActivate: [AuthGuard] },
-    { path: ':id', component: EditComponent, canActivate: [AuthGuard] }
+    { path: ':id', component: EditComponent, canActivate: [AuthGuard, AvailableAssetGuard] }
   ] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: '**', component: PageNotFoundComponent },

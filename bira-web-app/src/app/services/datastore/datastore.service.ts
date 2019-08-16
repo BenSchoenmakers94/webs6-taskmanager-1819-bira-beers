@@ -30,6 +30,10 @@ export class DatastoreService {
     return this.afs.collection(type).doc(objectId).valueChanges();
   }
 
+  checkIfObjectExists(type: any, objectId: any) {
+    return this.afs.collection(type).doc(objectId).get().toPromise();
+  }
+
   getPropertiesOfType(type: string) {
     return this.findObjectOfType('properties', type);
   }
