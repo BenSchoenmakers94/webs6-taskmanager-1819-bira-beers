@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewChecked } from '@angular/core';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable } from 'rxjs';
 import { DataSource } from '@angular/cdk/table';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./data-table.component.sass']
 })
 
-export class DataTableComponent implements OnInit {
+export class DataTableComponent implements OnInit, AfterViewChecked {
   @Input() type: any;
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter();
 
@@ -25,12 +25,8 @@ export class DataTableComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new BindableDataSource(this.store, this.type);
-    this.getColumns();
-  }
-
-  getColumns() {
-    this.dataSource.connect().pipe(first()).subscribe(object => {
-      this.displayedColumns = Object.getOwnPropertyNames(object[0]);
+    this.store.getPropertiesOfType(this.type).subscribe(properties => {
+      this.displayedColumns = Object.getOwnPropertyNames(properties);
     });
   }
 

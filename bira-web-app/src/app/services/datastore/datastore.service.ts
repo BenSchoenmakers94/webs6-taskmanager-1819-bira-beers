@@ -54,7 +54,7 @@ export class DatastoreService {
       const newId = this.afs.createId();
       const copy = JSON.parse(JSON.stringify(saveableObject));
       copy.uid = newId;
-      this.afs.collection(type).doc(newId).set(saveableObject);
+      this.afs.collection(type).doc(newId).set(copy);
     }
   }
 }
