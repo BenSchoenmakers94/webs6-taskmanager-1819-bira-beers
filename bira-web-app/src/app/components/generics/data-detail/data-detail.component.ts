@@ -25,6 +25,9 @@ export class DataDetailComponent implements OnInit, DoCheck {
     public store: DatastoreService) { }
 
   ngOnInit() {
+    if (this.selectedObject) {
+      this.selectedValue = this.selectedObject[this.displayedProperty];
+    }
     if (this.inputType === 'one') {
       this.collection = this.store.getAllFromType(this.textify.getTypeForId(this.displayedProperty));
     }

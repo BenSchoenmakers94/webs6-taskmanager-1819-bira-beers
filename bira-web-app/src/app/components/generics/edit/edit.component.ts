@@ -11,11 +11,12 @@ import { MatSnackBar } from '@angular/material';
 })
 export class EditComponent implements OnInit {
 
-  @Input() objectId?: any;
   public Object = Object;
+  public selectedObject: Observable<any>;
   public properties: Observable<any>;
   private saveableObject: any = {};
   private type: any;
+  private id: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,11 +24,10 @@ export class EditComponent implements OnInit {
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
-    //type/1
-    this.route.parent.url.subscribe(url => {
-      this.type = url[0].path;
-      this.properties = this.store.getPropertiesOfType(this.type);
-    });
+    this.id = this.route.snapshot.params.id;
+    this.type = this.route.snapshot.parent.routeConfig.path;
+    this.properties = this.store.getPropertiesOfType(this.type);
+    this.selectedObject = this.store.findObjectOfType(this.type, this.id);
   }
 
   stateChangedHandler(propertyAndValue: any) {
@@ -35,6 +35,6 @@ export class EditComponent implements OnInit {
   }
 
   onSave() {
-    this.store.upsertDocument(this.type, this.saveableObject, this.objectId);
+    this.store.upsertDocument(this.type, this.saveableObject, this.id);
   }
 }

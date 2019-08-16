@@ -7,7 +7,7 @@
             <ng-template [ngIf]="inputType == 'string'">
                     <form class="example-form">
                         <mat-form-field class="example-full-width">
-                            <input matInput (input)="onChange($event.target)" placeholder="Fill out {{textify.getNiceNameForId(displayedProperty)}}" value={{selectedObject?.displayedProperty}}>
+                            <input matInput (input)="onChange($event.target)" placeholder="Fill out {{textify.getNiceNameForId(displayedProperty)}}" value={{selectedValue}}>
                         </mat-form-field>
                     </form>
             </ng-template>
@@ -20,6 +20,7 @@
                             tickInterval="1"
                             min="1"
                             max="20"
+                            [(value)]="selectedValue"
                             (change)="onChange($event)">
                     </mat-slider>
                     <br>
