@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-kanban-board',
@@ -16,6 +17,21 @@ export class KanbanBoardComponent implements OnInit {
 
   public Object = Object;
   public columnsList: any[];
+  todo = [
+    'Get to work',
+    'Pick up groceries',
+    'Go home',
+    'Fall asleep'
+  ];
+
+  done = [
+    'Get up',
+    'Brush teeth',
+    'Take a shower',
+    'Check e-mail',
+    'Walk dog'
+  ];
+
   constructor(
     private store: DatastoreService) { }
 
@@ -25,14 +41,35 @@ export class KanbanBoardComponent implements OnInit {
 
   redraw() {
     this.columnsList = [];
-    return this.columnType.subscribe(x => {
+    this.columnType.subscribe(x => {
       x.forEach(element => {
-        if (!this.columnsList.includes(element.name)) {
-          this.columnsList.push(element.name);
-        }
+        this.columnsList.push({
+          propertyName: element.name,
+          items: []
+        });
       });
-      //this.cdr.detectChanges();
+    });
+    this.moveables.subscribe(y => {
+      y.forEach(element => {
+        this.columnsList.forEach(object => {
+          if (object.propertyName === element[this.columnProperty]) {
+            object.items.push(element);
+          }
+        });
+      });
     });
   }
 
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(event);
+    
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
+  }
 }
