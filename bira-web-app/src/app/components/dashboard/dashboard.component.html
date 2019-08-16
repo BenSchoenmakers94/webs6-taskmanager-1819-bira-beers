@@ -1,11 +1,5 @@
 <mat-grid-list cols="2" rowHeight="4:3">
-  <!-- <mat-grid-tile class="background-red">
-    <app-chart></app-chart>
-  </mat-grid-tile>
-  <mat-grid-tile class="background-yellow">
-    <app-chart></app-chart>
-  </mat-grid-tile> -->
   <mat-grid-tile [colspan]="2">
-    <app-kanban-board [columnProperty]="'stateId'" [columnType]="columnType" [moveables]="moveables"></app-kanban-board>
+    <app-kanban-board [moveableProperty]="'userStories'" [columnProperty]="'stateId'" [columnType]="columnType" [moveables]="moveables"></app-kanban-board>
   </mat-grid-tile>
 </mat-grid-list>

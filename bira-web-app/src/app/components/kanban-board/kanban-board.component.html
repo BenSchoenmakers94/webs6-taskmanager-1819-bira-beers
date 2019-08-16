@@ -1,28 +1,3 @@
-<!-- <mat-card class="sizing">
-  <mat-card-header>
-    <mat-card-title>
-
-    </mat-card-title>
-  </mat-card-header>
-  <ng-container *ngIf="columnType | async as columns">
-    <ng-container *ngIf="moveables | async as moves">
-      <mat-grid-list cols={{columnsList.length}} rowHeight="2:1">
-        <ng-container *ngFor="let object of columnsList; index as i">
-          <mat-grid-tile>
-              
-            <h3>{{object}}</h3>
-          </mat-grid-tile>
-        </ng-container>
-      </mat-grid-list>
-      <mat-divider></mat-divider>
-      <ng-container *ngFor="let object of moves; index as i">
-        <ng-container *ngIf="i==0">
-          <app-bar [columnProperty]="columnProperty" [columnList]="columnsList" [moveableObject]="object"></app-bar>
-        </ng-container>
-      </ng-container>
-    </ng-container>
-  </ng-container>
-</mat-card> -->
 <div cdkDropListGroup class="example-box">
   <div *ngFor="let object of columnsList" class="sizing">
     <h2>{{object.propertyName}}</h2>
