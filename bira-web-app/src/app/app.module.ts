@@ -28,6 +28,7 @@ import { ChartComponent } from './components/chart/chart.component';
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 import { BarComponent } from './components/kanban-board/bar/bar.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PropertyManagerComponent } from './components/property-manager/property-manager.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     EditComponent,
     ChartComponent,
     KanbanBoardComponent,
-    BarComponent
+    BarComponent,
+    PropertyManagerComponent
+  ],
+  entryComponents: [
+    DataManagerComponent,
+    CreateComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +69,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     DragDropModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

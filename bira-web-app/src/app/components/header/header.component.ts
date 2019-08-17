@@ -4,6 +4,12 @@ import { Observable } from 'rxjs';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { map } from 'rxjs/operators';
 import { NiceTextService } from 'src/app/services/nice-text.service';
+import { Router } from '@angular/router';
+import { DataManagerComponent } from '../generics/data-manager/data-manager.component';
+import { AuthGuard } from 'src/app/guards/authentication/auth.guard';
+import { CreateComponent } from '../generics/create/create.component';
+import { EditComponent } from '../generics/edit/edit.component';
+import { AvailableAssetGuard } from 'src/app/guards/available-asset/available-asset.guard';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +24,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     public authService: AuthService,
     public textify: NiceTextService,
-    private store: DatastoreService ) { }
+    private router: Router,
+    private store: DatastoreService) { }
 
   ngOnInit() {
     this.authService.userLogged.subscribe(x => this.enabled = x.isAdmin);
@@ -29,5 +36,28 @@ export class HeaderComponent implements OnInit {
         return { uid };
       });
     }));
+    this.collections.subscribe(routes => this.populateRoutes(routes));
+  }
+
+  populateRoutes(routes: any[]) {
+    routes.forEach(route => {
+      let canAdd = true;
+      this.router.config.forEach(configRoute => {
+        if (configRoute.path === route.uid) {
+          canAdd = false;
+        }
+      });
+      if (canAdd) { this.router.config.unshift(this.createPath(route.uid)); }
+    });
+  }
+
+  createPath(objectName: any) {
+    return {
+      path: objectName, component: DataManagerComponent, canActivate: [AuthGuard],
+      children: [
+        { path: 'add', component: CreateComponent, canActivate: [AuthGuard] },
+        { path: ':id', component: EditComponent, canActivate: [AuthGuard, AvailableAssetGuard] }
+      ]
+    };
   }
 }

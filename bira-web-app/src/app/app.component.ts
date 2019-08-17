@@ -1,5 +1,5 @@
 import { Component, AfterViewChecked, OnInit, AfterContentInit, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NiceTextService } from './services/nice-text.service';
 
 @Component({

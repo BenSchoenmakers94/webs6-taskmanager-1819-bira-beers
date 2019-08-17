@@ -5,34 +5,13 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/authentication/auth.guard';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { DataManagerComponent } from './components/generics/data-manager/data-manager.component';
-import { CreateComponent } from './components/generics/create/create.component';
-import { EditComponent } from './components/generics/edit/edit.component';
-import { AvailableAssetGuard } from './guards/available-asset/available-asset.guard';
+import { PropertyManagerComponent } from './components/property-manager/property-manager.component';
+import { IsAdminGuard } from './guards/is-admin/is-admin.guard';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
   { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
-  { path: 'sprints', component: DataManagerComponent, canActivate: [AuthGuard],
-  children: [
-    { path: 'add', component: CreateComponent, canActivate: [AuthGuard] },
-    { path: ':id', component: EditComponent, canActivate: [AuthGuard] }
-  ] },
-  { path: 'users', component: DataManagerComponent, canActivate: [AuthGuard],
-  children: [
-    { path: 'add', component: CreateComponent, canActivate: [AuthGuard] },
-    { path: ':id', component: EditComponent, canActivate: [AuthGuard] }
-  ] },
-  { path: 'teams', component: DataManagerComponent, canActivate: [AuthGuard],
-  children: [
-    { path: 'add', component: CreateComponent, canActivate: [AuthGuard] },
-    { path: ':id', component: EditComponent, canActivate: [AuthGuard] }
-  ] },
-  { path: 'userStories', component: DataManagerComponent, canActivate: [AuthGuard],
-  children: [
-    { path: 'add', component: CreateComponent, canActivate: [AuthGuard] },
-    { path: ':id', component: EditComponent, canActivate: [AuthGuard, AvailableAssetGuard] }
-  ] },
+  { path: 'properties', component: PropertyManagerComponent, canActivate: [AuthGuard, IsAdminGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: '**', component: PageNotFoundComponent },
 ];
