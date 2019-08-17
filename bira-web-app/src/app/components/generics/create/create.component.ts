@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
@@ -17,10 +17,10 @@ export class CreateComponent implements OnInit {
   public properties: Observable<any>;
   private saveableObject: any = {};
   private type: any;
-  private nrOfProps: number;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private store: DatastoreService,
     private snackbar: MatSnackBar,
     private textify: NiceTextService) { }
@@ -30,7 +30,12 @@ export class CreateComponent implements OnInit {
       this.type = url[0].path;
       this.properties = this.store.getPropertiesOfType(this.type);
       this.properties.subscribe(props => {
-        this.nrOfProps = this.Object.getOwnPropertyNames(props).length;
+        const objectNames = this.Object.getOwnPropertyNames(props);
+        objectNames.forEach(prop => {
+          if (!this.saveableObject[prop]) {
+            this.saveableObject[prop] = '';
+          }
+        });
       });
     });
   }
@@ -40,11 +45,8 @@ export class CreateComponent implements OnInit {
   }
 
   onSave() {
-    if (this.nrOfProps === this.Object.getOwnPropertyNames(this.saveableObject).length) {
-      this.store.upsertDocument(this.type, this.saveableObject, this.objectId);
-      this.snackbar.open('You created a new ' + this.textify.getSingular(this.type) + '!', 'OK', {duration: 2000});
-   } else {
-      this.snackbar.open('Please fill out all properties!', 'OK', {duration: 2000});
-    }
+    this.store.upsertDocument(this.type, this.saveableObject, this.objectId);
+    this.router.navigateByUrl(this.router.url.substring(0, this.router.url.lastIndexOf('/')));
+    this.snackbar.open('You created a new ' + this.textify.getSingular(this.type) + '!', 'OK', { duration: 2000 });
   }
 }

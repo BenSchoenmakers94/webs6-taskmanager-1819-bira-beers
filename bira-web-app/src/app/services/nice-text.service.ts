@@ -50,7 +50,7 @@ export class NiceTextService {
 
   getSingular(type: string) {
     let typeLessS = type.substring(0, type.length - 1);
-    if (typeLessS[typeLessS.length - 1] === 'e') {
+    if (typeLessS.substring(typeLessS.length - 2, typeLessS.length) === 'ie') {
       typeLessS = typeLessS.substring(0, typeLessS.length - 2) + 'y';
     }
     return typeLessS;
