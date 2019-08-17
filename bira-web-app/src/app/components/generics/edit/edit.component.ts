@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { MatSnackBar } from '@angular/material';
+import { NiceTextService } from 'src/app/services/nice-text.service';
 
 @Component({
   selector: 'app-edit',
@@ -20,8 +21,10 @@ export class EditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private store: DatastoreService,
-    private snackbar: MatSnackBar) { }
+    private snackbar: MatSnackBar,
+    private textify: NiceTextService) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.params.id;
@@ -36,5 +39,7 @@ export class EditComponent implements OnInit {
 
   onSave() {
     this.store.upsertDocument(this.type, this.saveableObject, this.id);
+    this.router.navigateByUrl(this.router.url.substring(0, this.router.url.lastIndexOf('/')));
+    this.snackbar.open('Succesfully edited: ' + this.textify.getSingular(this.type), 'OK', { duration: 2000 });
   }
 }

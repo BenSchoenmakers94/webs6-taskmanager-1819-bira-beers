@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -79,10 +79,14 @@ export class KanbanBoardComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
-      const selector = event.container.id.substring(event.container.id.lastIndexOf('-') + 1, event.container.id.length);
-      const copy = JSON.parse(JSON.stringify(event.container.data[0]));
-      copy[this.columnProperty] = this.columnsList[selector].propertyName;
-      this.store.updateDocument(this.moveableProperty, copy.uid, copy);
+      this.dropFinished(event);
     }
+  }
+
+  dropFinished(event: CdkDragDrop<string[]>) {
+    const selector = event.container.id.substring(event.container.id.lastIndexOf('-') + 1, event.container.id.length);
+    const copy = JSON.parse(JSON.stringify(event.container.data[0]));
+    copy[this.columnProperty] = this.columnsList[selector].propertyName;
+    this.store.updateDocument(this.moveableProperty, copy.uid, copy);
   }
 }
