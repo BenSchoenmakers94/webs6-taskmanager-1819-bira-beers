@@ -2,7 +2,7 @@
   <div *ngFor="let object of columnsList" class="sizing">
     <h2>{{object.propertyName}}</h2>
     <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" [cdkDropListData]="object.items">
-      <div class="example-box" *ngFor="let item of object.items" cdkDrag>{{item.name}}</div>
+      <div class="example-box" *ngFor="let item of object.items" (dblclick)="toDetail(item)" cdkDrag>{{item.name}}</div>
     </div>
   </div>
 </div>

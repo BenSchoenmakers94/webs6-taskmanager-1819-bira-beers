@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-kanban-board',
@@ -20,7 +21,8 @@ export class KanbanBoardComponent implements OnInit {
   public columnsList: any[];
 
   constructor(
-    private store: DatastoreService) { }
+    private store: DatastoreService,
+    private router: Router) { }
 
   ngOnInit() {
     this.redraw();
@@ -29,12 +31,21 @@ export class KanbanBoardComponent implements OnInit {
   redraw() {
     this.columnsList = [];
     this.columnType.subscribe(x => {
+      const newList = [];
       x.forEach(element => {
-        this.columnsList.push({
+        newList.push({
           propertyName: element.name,
           items: []
         });
       });
+      newList.forEach(newLister => {
+        this.columnsList.forEach(list => {
+          if (newLister.propertyName === list.propertyName) {
+            newLister.items = list.items;
+          }
+        });
+      });
+      this.columnsList = newList;
     });
     this.moveables.subscribe(y => {
       this.columnsList.forEach(listItem => {
@@ -56,6 +67,10 @@ export class KanbanBoardComponent implements OnInit {
     });
   }
 
+  toDetail(object: any) {
+    this.router.navigateByUrl('/' + this.moveableProperty + '/' + object.uid);
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -65,9 +80,9 @@ export class KanbanBoardComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
       const selector = event.container.id.substring(event.container.id.lastIndexOf('-') + 1, event.container.id.length);
-      let copy = JSON.parse(JSON.stringify(event.container.data[0]));
-      copy[this.columnProperty] = this.columnsList[selector]['propertyName'];
-      this.store.updateDocument(this.moveableProperty, copy['uid'], copy);
+      const copy = JSON.parse(JSON.stringify(event.container.data[0]));
+      copy[this.columnProperty] = this.columnsList[selector].propertyName;
+      this.store.updateDocument(this.moveableProperty, copy.uid, copy);
     }
   }
 }
