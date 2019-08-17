@@ -6,8 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 import { Observable, of } from 'rxjs';
-import { switchMap, timestamp } from 'rxjs/operators';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import { switchMap } from 'rxjs/operators';
 import { DatastoreService } from '../datastore/datastore.service';
 
 @Injectable({
@@ -72,6 +71,7 @@ export class AuthService {
                     }
                   })
                 );
+                this.router.navigateByUrl('/dashboard');
               }
 }
 

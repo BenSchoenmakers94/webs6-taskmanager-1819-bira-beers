@@ -1,58 +1,51 @@
 <mat-toolbar color="primary">
-    <mat-toolbar-row>
-      <span>
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button [routerLink]="[ '/dashboard']" mat-menu-item>
-              <mat-icon>whatshot</mat-icon>
-              <span>Dashboard</span>
-            </button>
-            <button [routerLink]="[ '/sprints']" mat-menu-item>
-              <mat-icon>directions_run</mat-icon>
-              <span>Sprints</span>
-            </button>
-            <button [routerLink]="[ '/userStories']" mat-menu-item>
-              <mat-icon>storage</mat-icon>
-              <span>Backlog</span>
-            </button>
-            <button [routerLink]="[ '/teams']" mat-menu-item>
-              <mat-icon>people</mat-icon>
-              <span>Teams</span>
-            </button>
-            <button [routerLink]="[ '/users']" mat-menu-item>
-              <mat-icon>face</mat-icon>
-              <span>Users</span>
-            </button>
-          </mat-menu>
-      </span>
-      <span class="example-spacer"></span>
-      <div *ngIf="authService.userLogged | async; then authenticated else guest"></div>
-      <ng-template #guest>
-        <span>Try Loggin In!</span>
-        <button mat-icon-button [matMenuTriggerFor]="menuGuest">
-          <mat-icon>person_outline</mat-icon>
+  <mat-toolbar-row>
+    <span>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button [routerLink]="[ '/dashboard']" mat-menu-item>
+          <mat-icon>whatshot</mat-icon>
+          <span>Dashboard</span>
         </button>
-        <mat-menu #menuGuest="matMenu">
-          <button [routerLink]="[ '/']" mat-menu-item>
-            <span>Sign in</span>
+        <ng-container *ngIf="this.authService.userLogged">
+          <button [routerLink]="[ '/properties']" [disabled]="!enabled" mat-menu-item>
+            <mat-icon>settings</mat-icon>
+            <span>Properties</span>
           </button>
-        </mat-menu>
-      </ng-template>
-      <ng-template #authenticated>
-          <span *ngIf="authService.userLogged | async as user">{{user.name}} </span>
-          <button mat-icon-button [matMenuTriggerFor]="menuAuth">
-            <mat-icon>person</mat-icon>
-          </button>
-          <mat-menu #menuAuth="matMenu">
-              <button [routerLink]="[ '/profile']" mat-menu-item>
-                <span>My Profile</span>
-              </button>
-            <button (click)="authService.signOut()" mat-menu-item>
-              <span>Sign out</span>
-            </button>
-          </mat-menu>
-      </ng-template>
-    </mat-toolbar-row>
-  </mat-toolbar>
+        </ng-container>
+        <button *ngFor="let item of collections | async" [routerLink]="[ '/'+item.uid]" mat-menu-item>
+          <span>{{textify.getNiceText(item.uid)}}</span>
+        </button>
+      </mat-menu>
+    </span>
+    <span class="example-spacer"></span>
+    <div *ngIf="authService.userLogged | async; then authenticated else guest"></div>
+    <ng-template #guest>
+      <span>Try Loggin In!</span>
+      <button mat-icon-button [matMenuTriggerFor]="menuGuest">
+        <mat-icon>person_outline</mat-icon>
+      </button>
+      <mat-menu #menuGuest="matMenu">
+        <button [routerLink]="[ '/']" mat-menu-item>
+          <span>Sign in</span>
+        </button>
+      </mat-menu>
+    </ng-template>
+    <ng-template #authenticated>
+      <span *ngIf="authService.userLogged | async as user">{{user.name}} </span>
+      <button mat-icon-button [matMenuTriggerFor]="menuAuth">
+        <mat-icon>person</mat-icon>
+      </button>
+      <mat-menu #menuAuth="matMenu">
+        <button [routerLink]="[ '/profile']" mat-menu-item>
+          <span>My Profile</span>
+        </button>
+        <button (click)="authService.signOut()" mat-menu-item>
+          <span>Sign out</span>
+        </button>
+      </mat-menu>
+    </ng-template>
+  </mat-toolbar-row>
+</mat-toolbar>

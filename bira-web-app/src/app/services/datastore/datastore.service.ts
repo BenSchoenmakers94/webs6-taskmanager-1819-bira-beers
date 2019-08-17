@@ -61,4 +61,8 @@ export class DatastoreService {
       this.afs.collection(type).doc(newId).set(copy);
     }
   }
+
+  getAllCollections() {
+    return this.afs.collection('properties').snapshotChanges();
+  }
 }
