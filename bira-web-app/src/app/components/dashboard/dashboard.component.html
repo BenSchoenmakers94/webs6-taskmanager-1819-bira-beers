@@ -1,5 +1,12 @@
-<mat-grid-list cols="2" rowHeight="4:3">
-  <mat-grid-tile [colspan]="2">
-    <app-kanban-board [moveableProperty]="'userStories'" [columnProperty]="'stateId'" [columnType]="columnType" [moveables]="moveables"></app-kanban-board>
-  </mat-grid-tile>
-</mat-grid-list>
+<mat-tab-group dynamicHeight>
+  <mat-tab label="Sprint Progression">
+    <div class="example-small-box mat-elevation-z4">
+      Small content
+    </div>
+  </mat-tab>
+  <mat-tab label="Kanban">
+    <div class="example-large-box mat-elevation-z4">
+      <app-kanban-board [moveableProperty]="'userStories'" [columnProperty]="'stateId'" [columnType]="columnType" [moveables]="moveables"></app-kanban-board>
+    </div>
+  </mat-tab>
+</mat-tab-group>

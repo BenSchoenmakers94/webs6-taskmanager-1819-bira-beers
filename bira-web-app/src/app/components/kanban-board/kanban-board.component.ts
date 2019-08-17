@@ -85,8 +85,10 @@ export class KanbanBoardComponent implements OnInit {
 
   dropFinished(event: CdkDragDrop<string[]>) {
     const selector = event.container.id.substring(event.container.id.lastIndexOf('-') + 1, event.container.id.length);
-    const copy = JSON.parse(JSON.stringify(event.container.data[0]));
-    copy[this.columnProperty] = this.columnsList[selector].propertyName;
-    this.store.updateDocument(this.moveableProperty, copy.uid, copy);
+    event.container.data.forEach(value => {
+      const copy = JSON.parse(JSON.stringify(value));
+      copy[this.columnProperty] = this.columnsList[selector].propertyName;
+      this.store.updateDocument(this.moveableProperty, copy.uid, copy);
+    });
   }
 }
