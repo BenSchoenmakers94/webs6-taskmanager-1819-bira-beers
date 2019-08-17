@@ -1,7 +1,0 @@
-<mat-card>
-    <mat-card-title>{{story.name}}</mat-card-title>
-    <div *ngIf="user | async as userobj">
-        <mat-card-subtitle>{{story.state}} -- {{userobj.userName}}</mat-card-subtitle>
-    </div>
-    <mat-card-content>{{story.description}}</mat-card-content>
-  </mat-card>

@@ -15,8 +15,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { WizardComponent } from './components/wizard/wizard.component';
-import { UserStoryComponent } from './components/user-story/user-story.component';
-import { SprintComponent } from './components/sprint/sprint.component';
 import { DataTableComponent } from './components/generics/data-table/data-table.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -26,7 +24,6 @@ import { CreateComponent } from './components/generics/create/create.component';
 import { EditComponent } from './components/generics/edit/edit.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
-import { BarComponent } from './components/kanban-board/bar/bar.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PropertyManagerComponent } from './components/property-manager/property-manager.component';
 
@@ -38,8 +35,6 @@ import { PropertyManagerComponent } from './components/property-manager/property
     HeaderComponent,
     FooterComponent,
     WizardComponent,
-    UserStoryComponent,
-    SprintComponent,
     DataTableComponent,
     SignInComponent,
     PageNotFoundComponent,
@@ -49,7 +44,6 @@ import { PropertyManagerComponent } from './components/property-manager/property
     EditComponent,
     ChartComponent,
     KanbanBoardComponent,
-    BarComponent,
     PropertyManagerComponent
   ],
   entryComponents: [

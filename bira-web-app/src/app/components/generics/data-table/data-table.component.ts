@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DataSource } from '@angular/cdk/table';
 import { NiceTextService } from 'src/app/services/nice-text.service';
 import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-data-table',
@@ -11,12 +12,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./data-table.component.sass']
 })
 
-export class DataTableComponent implements OnInit {
+export class DataTableComponent implements OnInit, OnDestroy {
   @Input() type: any;
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter();
 
   dataSource: BindableDataSource;
   displayedColumns: any[];
+
+  private unSubscribe = new Subject();
+
   constructor(
     public store: DatastoreService,
     public textify: NiceTextService,
@@ -24,9 +28,14 @@ export class DataTableComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new BindableDataSource(this.store, this.type);
-    this.store.getPropertiesOfType(this.type).subscribe(properties => {
+    this.store.getPropertiesOfType(this.type).pipe(takeUntil(this.unSubscribe)).subscribe(properties => {
       this.displayedColumns = Object.getOwnPropertyNames(properties);
     });
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 
   goToDetail(row: any) {

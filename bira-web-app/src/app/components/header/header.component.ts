@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/authentication/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { NiceTextService } from 'src/app/services/nice-text.service';
 import { Router } from '@angular/router';
 import { DataManagerComponent } from '../generics/data-manager/data-manager.component';
@@ -16,11 +16,13 @@ import { AvailableAssetGuard } from 'src/app/guards/available-asset/available-as
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   public collections: Observable<any>;
   public enabled = false;
 
+  private unSubscribe = new Subject();
+  
   constructor(
     public authService: AuthService,
     public textify: NiceTextService,
@@ -28,7 +30,7 @@ export class HeaderComponent implements OnInit {
     private store: DatastoreService) { }
 
   ngOnInit() {
-    this.authService.userLogged.subscribe(x => this.enabled = x.isAdmin);
+    this.authService.userLogged.pipe(takeUntil(this.unSubscribe)).subscribe(x => this.enabled = x.isAdmin);
     const object = this.store.getAllCollections();
     this.collections = object.pipe(map(actions => {
       return actions.map(a => {
@@ -37,6 +39,11 @@ export class HeaderComponent implements OnInit {
       });
     }));
     this.collections.subscribe(routes => this.populateRoutes(routes));
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 
   populateRoutes(routes: any[]) {

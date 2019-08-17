@@ -1,22 +1,25 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
 import { NiceTextService } from 'src/app/services/nice-text.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.sass']
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, OnDestroy {
 
   @Input() objectId?: any;
   public Object = Object;
   public properties: Observable<any>;
+
   private saveableObject: any = {};
   private type: any;
+  private unSubscribe = new Subject();
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +32,7 @@ export class CreateComponent implements OnInit {
     this.route.parent.url.subscribe(url => {
       this.type = url[0].path;
       this.properties = this.store.getPropertiesOfType(this.type);
-      this.properties.subscribe(props => {
+      this.properties.pipe(takeUntil(this.unSubscribe)).subscribe(props => {
         const objectNames = this.Object.getOwnPropertyNames(props);
         objectNames.forEach(prop => {
           if (!this.saveableObject[prop]) {
@@ -38,6 +41,11 @@ export class CreateComponent implements OnInit {
         });
       });
     });
+  }
+
+  ngOnDestroy() {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 
   stateChangedHandler(propertyAndValue: any) {

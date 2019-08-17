@@ -1,15 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-kanban-board',
   templateUrl: './kanban-board.component.html',
   styleUrls: ['./kanban-board.component.sass']
 })
-export class KanbanBoardComponent implements OnInit {
+export class KanbanBoardComponent implements OnInit, OnDestroy {
 
   @Input() columnType: Observable<any>;
   @Input() moveables: Observable<any>;
@@ -20,6 +21,9 @@ export class KanbanBoardComponent implements OnInit {
   public Object = Object;
   public columnsList: any[];
 
+  private unSubscribeColumn = new Subject();
+  private unSubscribeMoveable = new Subject();
+
   constructor(
     private store: DatastoreService,
     private router: Router) { }
@@ -28,9 +32,17 @@ export class KanbanBoardComponent implements OnInit {
     this.redraw();
   }
 
+  ngOnDestroy() {
+    this.unSubscribeColumn.next();
+    this.unSubscribeColumn.complete();
+
+    this.unSubscribeMoveable.next();
+    this.unSubscribeMoveable.complete();
+  }
+
   redraw() {
     this.columnsList = [];
-    this.columnType.subscribe(x => {
+    this.columnType.pipe(takeUntil(this.unSubscribeColumn)).subscribe(x => {
       const newList = [];
       x.forEach(element => {
         newList.push({
@@ -47,7 +59,7 @@ export class KanbanBoardComponent implements OnInit {
       });
       this.columnsList = newList;
     });
-    this.moveables.subscribe(y => {
+    this.moveables.pipe(takeUntil(this.unSubscribeMoveable)).subscribe(y => {
       this.columnsList.forEach(listItem => {
         listItem.items = [];
       });
