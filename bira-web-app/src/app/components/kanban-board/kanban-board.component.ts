@@ -21,14 +21,16 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
   public Object = Object;
   public columnsList: any[];
 
-  private unSubscribeColumn = new Subject();
-  private unSubscribeMoveable = new Subject();
+  private unSubscribeColumn: Subject<any>;
+  private unSubscribeMoveable: Subject<any>;
 
   constructor(
     private store: DatastoreService,
     private router: Router) { }
 
   ngOnInit() {
+    this.unSubscribeColumn = new Subject();
+    this.unSubscribeMoveable = new Subject();
     this.redraw();
   }
 
@@ -96,7 +98,7 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
   }
 
   dropFinished(event: CdkDragDrop<string[]>) {
-    const selector = event.container.id.substring(event.container.id.lastIndexOf('-') + 1, event.container.id.length);
+    const selector = parseInt(event.container.id.substring(event.container.id.lastIndexOf('-') + 1, event.container.id.length)) % this.columnsList.length;
     event.container.data.forEach(value => {
       const copy = JSON.parse(JSON.stringify(value));
       copy[this.columnProperty] = this.columnsList[selector].propertyName;

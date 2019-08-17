@@ -7,7 +7,7 @@
             <ng-template [ngIf]="inputType == 'string'">
                     <form class="example-form">
                         <mat-form-field class="example-full-width">
-                            <input matInput (input)="onChange($event.target)" placeholder="Fill out {{textify.getNiceNameForId(displayedProperty)}}" value={{selectedValue}}>
+                            <input matInput (input)="onChange($event.target.value)" placeholder="Fill out {{textify.getNiceNameForId(displayedProperty)}}" value={{selectedValue}}>
                         </mat-form-field>
                     </form>
             </ng-template>
@@ -21,7 +21,7 @@
                             min="1"
                             max="20"
                             [(value)]="selectedValue"
-                            (change)="onChange($event)">
+                            (change)="onChange($event.value)">
                     </mat-slider>
                     <br>
                     <mat-label>Current {{textify.getNiceNameForId(displayedProperty)}}: {{selectedValue}} </mat-label>
@@ -38,10 +38,18 @@
             </ng-template>
             <ng-template [ngIf]="inputType == 'date'">
                     <mat-form-field>
-                            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                            <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="onChange($event.value)">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                           </mat-form-field>
+            </ng-template>
+            <ng-template [ngIf]="inputType == 'boolean'">
+                    <mat-slide-toggle
+                    [color]="accent"
+                    [checked]="selectedValue"
+                    (change)="onChange($event.checked)">
+                  Slide to activate!
+                </mat-slide-toggle>
             </ng-template>
     </ng-template>
     <ng-template #viewOnly>

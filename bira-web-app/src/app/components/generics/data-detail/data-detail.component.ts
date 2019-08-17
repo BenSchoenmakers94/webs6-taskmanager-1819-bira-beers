@@ -18,6 +18,8 @@ export class DataDetailComponent implements OnInit, DoCheck {
 
   public collection: Observable<any>;
   public selectedValue: any;
+  public minDate: any;
+
   private previousSelectedValue: any;
 
   constructor(
@@ -31,6 +33,7 @@ export class DataDetailComponent implements OnInit, DoCheck {
     if (this.inputType === 'one') {
       this.collection = this.store.getAllFromType(this.textify.getTypeForId(this.displayedProperty));
     }
+    this.minDate = new Date();
   }
 
   ngDoCheck() {
@@ -40,8 +43,8 @@ export class DataDetailComponent implements OnInit, DoCheck {
     }
   }
 
-  onChange(event: any) {
-    this.selectedValue = event.value;
+  onChange(value: any) {
+    this.selectedValue = value;
   }
 
   stateHasChanged(valueChanged: any) {
