@@ -23,7 +23,6 @@ export class EditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: DatastoreService,
-    private snackbar: MatSnackBar,
     private textify: NiceTextService) { }
 
   ngOnInit() {
@@ -39,7 +38,5 @@ export class EditComponent implements OnInit {
 
   onSave() {
     this.store.upsertDocument(this.type, this.saveableObject, this.id);
-    this.router.navigateByUrl(this.router.url.substring(0, this.router.url.lastIndexOf('/')));
-    this.snackbar.open('Succesfully edited: ' + this.textify.getSingular(this.type), 'OK', { duration: 2000 });
   }
 }

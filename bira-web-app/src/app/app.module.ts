@@ -26,6 +26,7 @@ import { ChartComponent } from './components/chart/chart.component';
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PropertyManagerComponent } from './components/property-manager/property-manager.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { PropertyManagerComponent } from './components/property-manager/property
     AngularFirestoreModule,
     AngularFireStorageModule,
     AppRoutingModule,
-    DragDropModule
+    DragDropModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [

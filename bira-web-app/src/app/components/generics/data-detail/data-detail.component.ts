@@ -47,6 +47,12 @@ export class DataDetailComponent implements OnInit, DoCheck {
     this.selectedValue = value;
   }
 
+  onDateChange(value: any) {
+    this.selectedValue = value.toLocaleDateString('nl-NL', {
+      day: 'numeric', month: 'short', year: 'numeric'
+    }).replace(/ /g, '-').replace(/\./g, '');
+  }
+
   stateHasChanged(valueChanged: any) {
     const emittable = {
       property: this.displayedProperty,

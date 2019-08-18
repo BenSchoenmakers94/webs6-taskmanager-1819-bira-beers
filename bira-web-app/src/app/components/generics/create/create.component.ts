@@ -25,7 +25,6 @@ export class CreateComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private store: DatastoreService,
-    private snackbar: MatSnackBar,
     private textify: NiceTextService) { }
 
   ngOnInit() {
@@ -54,7 +53,5 @@ export class CreateComponent implements OnInit, OnDestroy {
 
   onSave() {
     this.store.upsertDocument(this.type, this.saveableObject, this.objectId);
-    this.router.navigateByUrl(this.router.url.substring(0, this.router.url.lastIndexOf('/')));
-    this.snackbar.open('You created a new ' + this.textify.getSingular(this.type) + '!', 'OK', { duration: 2000 });
   }
 }

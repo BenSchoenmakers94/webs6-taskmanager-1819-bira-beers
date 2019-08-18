@@ -1,14 +1,23 @@
-import { Injectable, Query } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { NotifyService } from '../notification/notify.service';
+import { NiceTextService } from '../nice-text.service';
+import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatastoreService {
-  store: AngularFirestore;
-  constructor(private afs: AngularFirestore) {
-      this.store = afs;
-   }
+  public store: AngularFirestore;
+
+  constructor(
+    private afs: AngularFirestore,
+    private notifier: NotifyService,
+    private textify: NiceTextService,
+    private router: Router) {
+    this.store = this.afs;
+  }
 
   sprintsForTeam(teamId) {
     return this.afs.collection('sprints', ref => ref.where('teamId', '==', teamId)).valueChanges();
@@ -43,26 +52,78 @@ export class DatastoreService {
   }
 
   getObjectFromId(objectId: string) {
-    const type =  objectId.substring(0, objectId.lastIndexOf('Id')) + 's';
+    const type = objectId.substring(0, objectId.lastIndexOf('Id')) + 's';
     return this.afs.collection(type).doc(objectId).valueChanges();
   }
 
   updateDocument(type: any, objectId: any, data: any) {
-    this.afs.collection(type).doc(objectId).set(data, {merge: true});
+    this.afs.collection(type).doc(objectId).set(data, { merge: true });
+    this.router.navigateByUrl(this.router.url.substring(0, this.router.url.lastIndexOf('/')));
+    this.notifier.notifyUser('Succesfully edited: ' + this.textify.getSingular(type));
   }
 
   upsertDocument(type: any, saveableObject: any, objectId?: any) {
     if (objectId) {
-      this.updateDocument(type, objectId, saveableObject);
+      return this.validateObject(type, objectId, saveableObject);
     } else {
       const newId = this.afs.createId();
       const copy = JSON.parse(JSON.stringify(saveableObject));
       copy.uid = newId;
-      this.afs.collection(type).doc(newId).set(copy);
+      return this.validateObject(type, newId, copy);
     }
   }
 
   getAllCollections() {
     return this.afs.collection('properties').snapshotChanges();
+  }
+
+  findObjectOfTypeWithConstraints(type: string, constraintOnProperty: string, operator: any, desiredValue: any) {
+    return this.afs.collection(type, ref => ref.where(constraintOnProperty, operator, desiredValue).limit(1)).valueChanges();
+  }
+
+  validateObject(type: any, objectId, objectData: any) {
+    const constraintsObservable = this.getAllFromType('constraints');
+    constraintsObservable.pipe(take(1)).subscribe(constraintsCollection => {
+      const constraints = [];
+      constraintsCollection.forEach(constraintType => {
+        const typeIndexes = Object.getOwnPropertyNames(constraintType);
+        typeIndexes.forEach(index => {
+          constraints.push(this._getConstraint(constraintType[index]));
+        });
+      });
+      let canAdd = true;
+      constraints.forEach(constraint => {
+        if (constraint.operator === '>(date)') {
+          const startDate = new Date(objectData[constraint.matchable]);
+          const endDate = new Date(objectData[constraint.matcher]);
+          if (!(startDate.getTime() > endDate.getTime())) {
+            this.notifier.notifyUser(
+              this.textify.getNiceText(
+                constraint.matchable) + ' needs to happen after: ' + this.textify.getNiceText(constraint.matcher));
+            canAdd = false;
+          }
+        }
+        if (constraint.operator === 'is') {
+          if (objectData[constraint.matchable]) {
+            this._setUnique();
+          }
+        }
+        if (constraint.operator === 'has') {
+          objectData[constraint.matcher] = new Date().toLocaleDateString('nl-NL', {
+            day: 'numeric', month: 'short', year: 'numeric'
+          }).replace(/ /g, '-').replace(/\./g, '');
+        }
+      });
+      if (canAdd) { this.updateDocument(type, objectId, objectData); }
+    });
+  }
+
+  _getConstraint(constraintValue: any) {
+    const parts = constraintValue.split(' ');
+    return { matchable: parts[0], operator: parts[1], matcher: parts[2] };
+  }
+
+  _setUnique() {
+    console.log('UNIQUE');
   }
 }
