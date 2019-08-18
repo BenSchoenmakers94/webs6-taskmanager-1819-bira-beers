@@ -33,6 +33,13 @@ export class DataDetailComponent implements OnInit, DoCheck {
     if (this.inputType === 'one') {
       this.collection = this.store.getAllFromType(this.textify.getTypeForId(this.displayedProperty));
     }
+
+    if (this.inputType == 'date') {
+      console.log(this.selectedValue);
+      this.selectedValue = new Date(this.selectedValue);
+      console.log(this.selectedValue);
+
+    }
     this.minDate = new Date();
   }
 
