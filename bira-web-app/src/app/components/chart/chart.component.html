@@ -1,11 +1,20 @@
-<div style="display: block;" *ngIf="lineChartLabels">
-  <canvas baseChart width="550" height="550"
-    [datasets]="lineChartData"
-    [labels]="lineChartLabels"
-    [options]="lineChartOptions"
-    [colors]="lineChartColors"
-    [legend]="lineChartLegend"
-    [chartType]="lineChartType"
-    [plugins]="lineChartPlugins">
-  </canvas>
-</div>
+<ng-container *ngIf="showChart; then thenTemplate; else elseTemplate"></ng-container>
+<ng-template #thenTemplate>
+  <div style="display: block;" *ngIf="lineChartLabels">
+    <canvas baseChart width="550" height="550"
+      [datasets]="lineChartData"
+      [labels]="lineChartLabels"
+      [options]="lineChartOptions"
+      [colors]="lineChartColors"
+      [legend]="lineChartLegend"
+      [chartType]="lineChartType"
+      [plugins]="lineChartPlugins">
+    </canvas>
+  </div>
+</ng-template>
+<ng-template #elseTemplate>
+  <div style="display: block;" *ngIf="lineChartLabels">
+    <h1>No Active Sprint</h1>
+  </div>
+</ng-template>
+

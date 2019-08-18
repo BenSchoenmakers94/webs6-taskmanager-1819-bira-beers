@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, take, map } from 'rxjs/operators';
 import { NiceTextService } from 'src/app/services/nice-text.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
   @Input() columnProperty: any;
   @Input() moveableProperty: any;
   @Input() workableProperty: any;
+  @Input() filterable?: any;
 
   public Object = Object;
   public columnsList: any[];
@@ -53,6 +54,18 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
 
   redraw() {
     this.columnsList = [];
+    this.workingObject.pipe(takeUntil(this.unSubscribeWorkable),
+    map(objects => {
+      const filteredObjects = [];
+      objects.forEach(object => {
+          if (object[this.filterable]) {
+            filteredObjects.push(object);
+          }
+        });
+      return filteredObjects[filteredObjects.length - 1];
+    })).subscribe(workable => {
+      this.workableId = workable.uid;
+    });
     this.columnType.pipe(takeUntil(this.unSubscribeColumn)).subscribe(x => {
       const newList = [];
       x.forEach(element => {
@@ -70,7 +83,16 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
       });
       this.columnsList = newList;
     });
-    this.moveables.pipe(takeUntil(this.unSubscribeMoveable)).subscribe(y => {
+    this.moveables.pipe(takeUntil(this.unSubscribeMoveable),
+    map(objects => {
+      const filteredObjects = [];
+      objects.forEach(object => {
+          if (!object[this.textify.getIdForType(this.workableProperty)] || object[this.textify.getIdForType(this.workableProperty)] === this.workableId) {
+            filteredObjects.push(object);
+          }
+        });
+      return filteredObjects;
+    })).subscribe(y => {
       this.columnsList.forEach(listItem => {
         listItem.items = [];
       });
@@ -87,9 +109,6 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
           }
         });
       });
-    });
-    this.workingObject.pipe(takeUntil(this.unSubscribeWorkable)).subscribe(workable => {
-      this.workableId = workable[0].uid;
     });
   }
 

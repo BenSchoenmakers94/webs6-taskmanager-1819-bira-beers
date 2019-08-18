@@ -30,6 +30,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   public lineChartLegend = true;
   public lineChartType = 'line';
   public lineChartPlugins = [];
+  public showChart: boolean;
 
   private unSubscribeWorkable: Subject<any>;
   private unSubscribeCollection: Subject<any>;
@@ -39,10 +40,17 @@ export class ChartComponent implements OnInit, OnDestroy {
     private textify: NiceTextService) { }
 
   ngOnInit() {
+    this.showChart = false;
     this.unSubscribeWorkable = new Subject();
     this.unSubscribeCollection = new Subject();
     this.workingObject.pipe(takeUntil(this.unSubscribeWorkable)).subscribe(workable => {
-      this.calculateChartData(workable[0]);
+      if (workable[0]) {
+        this.showChart = true;
+        this.calculateChartData(workable[0]);
+        
+      } else {
+        this.showChart = false;
+      }
     });
   }
 
