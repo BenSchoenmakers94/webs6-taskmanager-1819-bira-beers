@@ -59,7 +59,10 @@ export class DatastoreService {
   updateDocument(type: any, objectId: any, data: any, noNavigation?: any) {
     this.afs.collection(type).doc(objectId).set(data, { merge: true });
     if (!noNavigation) { this.router.navigateByUrl(this.router.url.substring(0, this.router.url.lastIndexOf('/'))); }
-    this.notifier.notifyUser('Succesfully edited: ' + this.textify.getSingular(type));
+    this.notifier.notifyUser(
+      'Succesfully edited: ' +
+      this.textify.getSingular(this.textify.getNiceText(type)) +
+      ' (' + data.name + ') !');
   }
 
   upsertDocument(type: any, saveableObject: any, objectId?: any, noNavigation?: any) {
@@ -118,13 +121,24 @@ export class DatastoreService {
           if (constraint.operator === 'is') {
             if (objectData[constraint.matchable]) {
               this._setUnique(type, constraint.matchable, objectId, objectData[constraint.matchable], false);
-              console.log(objectData);
             }
           }
           if (constraint.operator === 'has') {
             objectData[constraint.matcher] = new Date().toLocaleDateString('nl-NL', {
               day: 'numeric', month: 'short', year: 'numeric'
             }).replace(/ /g, '-').replace(/\./g, '');
+          }
+          if (constraint.operator === 'new') {
+            if (!objectData[constraint.matchable]) {
+              objectData[constraint.matchable] = constraint.matcher;
+            }
+          }
+          if (constraint.operator === 'on') {
+            if (objectData['stateId'] === constraint.matcher) {
+              if (objectData[constraint.matchable]) {
+                objectData[constraint.matchable] = '';
+              }
+            }
           }
         });
         if (canAdd) { this.updateDocument(type, objectId, objectData, noNavigation); }

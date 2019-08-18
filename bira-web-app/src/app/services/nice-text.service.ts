@@ -55,4 +55,8 @@ export class NiceTextService {
     }
     return typeLessS;
   }
+
+  getIdForType(type: any) {
+    return this.getSingular(type) + 'Id';
+  }
 }

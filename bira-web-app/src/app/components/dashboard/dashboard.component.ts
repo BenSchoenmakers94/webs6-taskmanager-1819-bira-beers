@@ -11,7 +11,8 @@ export class DashboardComponent implements OnInit {
 
   public columnType: Observable<any>;
   public moveables: Observable<any>;
-  public activeSprint: Observable<any>;
+  public activeSprintForChart: Observable<any>;
+  public activeSprintForBoard: Observable<any>;
 
   constructor(private store: DatastoreService) {
   }
@@ -19,7 +20,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.columnType = this.store.getAllFromTypeSorted('states', 'sort');
     this.moveables = this.store.getAllFromType('userStories');
-    this.activeSprint = this.store.findObjectOfTypeWithConstraints('sprints', 'active', '==', true, 1);
+    this.activeSprintForChart = this.store.findObjectOfTypeWithConstraints('sprints', 'active', '==', true, 1);
+    this.activeSprintForBoard = this.store.findObjectOfTypeWithConstraints('sprints', 'active', '==', true, 1);
   }
 
 }

@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable, Subject } from 'rxjs';
-import { MatSnackBar } from '@angular/material';
 import { NiceTextService } from 'src/app/services/nice-text.service';
 import { takeUntil } from 'rxjs/operators';
 
@@ -23,9 +22,7 @@ export class CreateComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private store: DatastoreService,
-    private textify: NiceTextService) { }
+    private store: DatastoreService) { }
 
   ngOnInit() {
     this.route.parent.url.subscribe(url => {

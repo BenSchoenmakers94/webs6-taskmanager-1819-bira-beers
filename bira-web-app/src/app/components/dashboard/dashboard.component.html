@@ -1,12 +1,12 @@
 <mat-tab-group dynamicHeight>
   <mat-tab label="Sprint Progression">
     <div class="example-large-box mat-elevation-z4">
-      <app-chart [workingObject]="activeSprint"></app-chart>
+      <app-chart [workingObject]="activeSprintForChart"></app-chart>
     </div>
   </mat-tab>
   <mat-tab label="Kanban">
     <div class="example-large-box mat-elevation-z4">
-      <app-kanban-board [moveableProperty]="'userStories'" [columnProperty]="'stateId'" [columnType]="columnType" [moveables]="moveables"></app-kanban-board>
+      <app-kanban-board [workingObject]="activeSprintForBoard" [workableProperty]="'sprints'" [moveableProperty]="'userStories'" [columnProperty]="'stateId'" [columnType]="columnType" [moveables]="moveables"></app-kanban-board>
     </div>
   </mat-tab>
 </mat-tab-group>

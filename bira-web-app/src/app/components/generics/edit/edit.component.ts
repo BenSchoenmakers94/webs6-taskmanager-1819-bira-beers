@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
-import { MatSnackBar } from '@angular/material';
 import { NiceTextService } from 'src/app/services/nice-text.service';
 
 @Component({
@@ -21,9 +20,7 @@ export class EditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private store: DatastoreService,
-    private textify: NiceTextService) { }
+    private store: DatastoreService) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.params.id;
