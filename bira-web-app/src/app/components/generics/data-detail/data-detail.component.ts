@@ -18,6 +18,7 @@ export class DataDetailComponent implements OnInit, DoCheck {
 
   public collection: Observable<any>;
   public selectedValue: any;
+  public bindableDate: any;
   public minDate: any;
 
   private previousSelectedValue: any;
@@ -34,11 +35,8 @@ export class DataDetailComponent implements OnInit, DoCheck {
       this.collection = this.store.getAllFromType(this.textify.getTypeForId(this.displayedProperty));
     }
 
-    if (this.inputType == 'date') {
-      console.log(this.selectedValue);
-      this.selectedValue = new Date(this.selectedValue);
-      console.log(this.selectedValue);
-
+    if (this.inputType === 'date') {
+      this.bindableDate = new Date(this.selectedValue);
     }
     this.minDate = new Date();
   }
@@ -58,6 +56,7 @@ export class DataDetailComponent implements OnInit, DoCheck {
     this.selectedValue = value.toLocaleDateString('nl-NL', {
       day: 'numeric', month: 'short', year: 'numeric'
     }).replace(/ /g, '-').replace(/\./g, '');
+    this.bindableDate = value;
   }
 
   stateHasChanged(valueChanged: any) {
