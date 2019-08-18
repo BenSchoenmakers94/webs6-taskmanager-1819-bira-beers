@@ -102,7 +102,7 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
     event.container.data.forEach(value => {
       const copy = JSON.parse(JSON.stringify(value));
       copy[this.columnProperty] = this.columnsList[selector].propertyName;
-      this.store.updateDocument(this.moveableProperty, copy.uid, copy);
+      this.store.upsertDocument(this.moveableProperty, copy, copy.uid, true);
     });
   }
 }

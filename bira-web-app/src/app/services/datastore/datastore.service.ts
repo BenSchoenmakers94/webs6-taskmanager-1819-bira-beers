@@ -56,20 +56,20 @@ export class DatastoreService {
     return this.afs.collection(type).doc(objectId).valueChanges();
   }
 
-  updateDocument(type: any, objectId: any, data: any) {
+  updateDocument(type: any, objectId: any, data: any, noNavigation?: any) {
     this.afs.collection(type).doc(objectId).set(data, { merge: true });
-    this.router.navigateByUrl(this.router.url.substring(0, this.router.url.lastIndexOf('/')));
+    if (!noNavigation) { this.router.navigateByUrl(this.router.url.substring(0, this.router.url.lastIndexOf('/'))); }
     this.notifier.notifyUser('Succesfully edited: ' + this.textify.getSingular(type));
   }
 
-  upsertDocument(type: any, saveableObject: any, objectId?: any) {
+  upsertDocument(type: any, saveableObject: any, objectId?: any, noNavigation?: any) {
     if (objectId) {
-      return this.validateObject(type, objectId, saveableObject);
+      return this.validateObject(type, objectId, saveableObject, noNavigation);
     } else {
       const newId = this.afs.createId();
       const copy = JSON.parse(JSON.stringify(saveableObject));
       copy.uid = newId;
-      return this.validateObject(type, newId, copy);
+      return this.validateObject(type, newId, copy, noNavigation);
     }
   }
 
@@ -81,14 +81,16 @@ export class DatastoreService {
     return this.afs.collection(type, ref => ref.where(constraintOnProperty, operator, desiredValue).limit(1)).valueChanges();
   }
 
-  validateObject(type: any, objectId, objectData: any) {
+  validateObject(type: any, objectId, objectData: any, noNavigation?: any) {
     const constraintsObservable = this.getAllFromType('constraints');
     constraintsObservable.pipe(take(1)).subscribe(constraintsCollection => {
       const constraints = [];
       constraintsCollection.forEach(constraintType => {
         const typeIndexes = Object.getOwnPropertyNames(constraintType);
         typeIndexes.forEach(index => {
-          constraints.push(this._getConstraint(constraintType[index]));
+          if (index === type) {
+            constraints.push(this._getConstraint(constraintType[index]));
+          }
         });
       });
       let canAdd = true;
@@ -114,7 +116,7 @@ export class DatastoreService {
           }).replace(/ /g, '-').replace(/\./g, '');
         }
       });
-      if (canAdd) { this.updateDocument(type, objectId, objectData); }
+      if (canAdd) { this.updateDocument(type, objectId, objectData, noNavigation); }
     });
   }
 
