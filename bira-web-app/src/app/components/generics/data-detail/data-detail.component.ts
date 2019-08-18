@@ -35,6 +35,10 @@ export class DataDetailComponent implements OnInit, DoCheck {
       this.collection = this.store.getAllFromType(this.textify.getTypeForId(this.displayedProperty));
     }
 
+    if (this.inputType == 'boolean') {
+      this.selectedValue = this.selectedObject[this.displayedProperty] == true
+    }
+
     if (this.inputType === 'date') {
       this.bindableDate = new Date(this.selectedValue);
     }
