@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.columnType = this.store.getAllFromTypeSorted('states', 'sort');
     this.moveables = this.store.getAllFromType('userStories');
-    this.activeSprint = this.store.findObjectOfTypeWithConstraints('sprints', 'active', '==', true);
+    this.activeSprint = this.store.findObjectOfTypeWithConstraints('sprints', 'active', '==', true, 1);
   }
 
 }

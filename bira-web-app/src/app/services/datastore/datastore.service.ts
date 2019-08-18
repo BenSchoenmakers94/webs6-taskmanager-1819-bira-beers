@@ -77,8 +77,8 @@ export class DatastoreService {
     return this.afs.collection(specifier).snapshotChanges();
   }
 
-  findObjectOfTypeWithConstraints(type: string, constraintOnProperty: string, operator: any, desiredValue: any) {
-    return this.afs.collection(type, ref => ref.where(constraintOnProperty, operator, desiredValue).limit(1)).valueChanges();
+  findObjectOfTypeWithConstraints(type: string, constraintOnProperty: string, operator: any, desiredValue: any, amountOfResults: any) {
+    return this.afs.collection(type, ref => ref.where(constraintOnProperty, operator, desiredValue).limit(amountOfResults)).valueChanges();
   }
 
   validateObject(type: any, objectId, objectData: any, noNavigation?: any) {
