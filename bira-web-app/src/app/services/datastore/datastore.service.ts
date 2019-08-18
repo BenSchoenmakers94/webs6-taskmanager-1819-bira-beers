@@ -86,48 +86,49 @@ export class DatastoreService {
     constraintsObservable.pipe(
       take(1),
       map(values => {
-        let returnable = [];
+        const returnable = [];
         values.forEach(value => {
           const data = value.payload.doc.data();
           const id = value.payload.doc.id;
-          returnable.push({ id, data: {...data} });
+          returnable.push({ id, data: { ...data } });
         });
         return returnable;
       })).subscribe(constraintsCollection => {
-      const constraints = [];
-      constraintsCollection.forEach(constraintType => {
-        const typeIndexes = Object.getOwnPropertyNames(constraintType.data);
-        typeIndexes.forEach(index => {
-          if (type === constraintType.id) {
-            constraints.push(this._getConstraint(constraintType.data[index]));
+        const constraints = [];
+        constraintsCollection.forEach(constraintType => {
+          const typeIndexes = Object.getOwnPropertyNames(constraintType.data);
+          typeIndexes.forEach(index => {
+            if (type === constraintType.id) {
+              constraints.push(this._getConstraint(constraintType.data[index]));
+            }
+          });
+        });
+        let canAdd = true;
+        constraints.forEach(constraint => {
+          if (constraint.operator === '>(date)') {
+            const startDate = new Date(objectData[constraint.matchable]);
+            const endDate = new Date(objectData[constraint.matcher]);
+            if (!(startDate.getTime() > endDate.getTime())) {
+              this.notifier.notifyUser(
+                this.textify.getNiceText(
+                  constraint.matchable) + ' needs to happen after: ' + this.textify.getNiceText(constraint.matcher));
+              canAdd = false;
+            }
+          }
+          if (constraint.operator === 'is') {
+            if (objectData[constraint.matchable]) {
+              this._setUnique(type, constraint.matchable, objectId, objectData[constraint.matchable], false);
+              console.log(objectData);
+            }
+          }
+          if (constraint.operator === 'has') {
+            objectData[constraint.matcher] = new Date().toLocaleDateString('nl-NL', {
+              day: 'numeric', month: 'short', year: 'numeric'
+            }).replace(/ /g, '-').replace(/\./g, '');
           }
         });
+        if (canAdd) { this.updateDocument(type, objectId, objectData, noNavigation); }
       });
-      let canAdd = true;
-      constraints.forEach(constraint => {
-        if (constraint.operator === '>(date)') {
-          const startDate = new Date(objectData[constraint.matchable]);
-          const endDate = new Date(objectData[constraint.matcher]);
-          if (!(startDate.getTime() > endDate.getTime())) {
-            this.notifier.notifyUser(
-              this.textify.getNiceText(
-                constraint.matchable) + ' needs to happen after: ' + this.textify.getNiceText(constraint.matcher));
-            canAdd = false;
-          }
-        }
-        if (constraint.operator === 'is') {
-          if (objectData[constraint.matchable]) {
-            this._setUnique();
-          }
-        }
-        if (constraint.operator === 'has') {
-          objectData[constraint.matcher] = new Date().toLocaleDateString('nl-NL', {
-            day: 'numeric', month: 'short', year: 'numeric'
-          }).replace(/ /g, '-').replace(/\./g, '');
-        }
-      });
-      if (canAdd) { this.updateDocument(type, objectId, objectData, noNavigation); }
-    });
   }
 
   _getConstraint(constraintValue: any) {
@@ -135,7 +136,16 @@ export class DatastoreService {
     return { matchable: parts[0], operator: parts[1], matcher: parts[2] };
   }
 
-  _setUnique() {
-    console.log('UNIQUE');
+  _setUnique(type: any, distinctProperty: any, idToOmit, valueToRevert, revertTo: any) {
+    this.getAllFromType(type).pipe(take(3)).subscribe(sprints => {
+      sprints.forEach(sprint => {
+        if (sprint['uid'] !== idToOmit) {
+          if (sprint[distinctProperty] === valueToRevert) {
+            sprint[distinctProperty] = revertTo;
+            this.updateDocument(type, sprint['uid'], sprint, true);
+          }
+        }
+      });
+    });
   }
 }
