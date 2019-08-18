@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { NotifyService } from '../notification/notify.service';
 import { NiceTextService } from '../nice-text.service';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -73,8 +73,8 @@ export class DatastoreService {
     }
   }
 
-  getAllCollections() {
-    return this.afs.collection('properties').snapshotChanges();
+  getAllCollections(specifier: any) {
+    return this.afs.collection(specifier).snapshotChanges();
   }
 
   findObjectOfTypeWithConstraints(type: string, constraintOnProperty: string, operator: any, desiredValue: any) {
@@ -82,14 +82,24 @@ export class DatastoreService {
   }
 
   validateObject(type: any, objectId, objectData: any, noNavigation?: any) {
-    const constraintsObservable = this.getAllFromType('constraints');
-    constraintsObservable.pipe(take(1)).subscribe(constraintsCollection => {
+    const constraintsObservable = this.getAllCollections('constraints');
+    constraintsObservable.pipe(
+      take(1),
+      map(values => {
+        let returnable = [];
+        values.forEach(value => {
+          const data = value.payload.doc.data();
+          const id = value.payload.doc.id;
+          returnable.push({ id, data: {...data} });
+        });
+        return returnable;
+      })).subscribe(constraintsCollection => {
       const constraints = [];
       constraintsCollection.forEach(constraintType => {
-        const typeIndexes = Object.getOwnPropertyNames(constraintType);
+        const typeIndexes = Object.getOwnPropertyNames(constraintType.data);
         typeIndexes.forEach(index => {
-          if (index === type) {
-            constraints.push(this._getConstraint(constraintType[index]));
+          if (type === constraintType.id) {
+            constraints.push(this._getConstraint(constraintType.data[index]));
           }
         });
       });

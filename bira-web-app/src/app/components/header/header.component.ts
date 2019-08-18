@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.authService.userLogged.pipe(takeUntil(this.unSubscribe)).subscribe(x => this.enabled = x.isAdmin);
-    const object = this.store.getAllCollections();
+    const object = this.store.getAllCollections('properties');
     this.collections = object.pipe(map(actions => {
       return actions.map(a => {
         const uid = a.payload.doc.id;
