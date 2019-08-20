@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PropertyManagerComponent } from './property-manager.component';
 
 describe('PropertyManagerComponent', () => {
@@ -8,7 +8,8 @@ describe('PropertyManagerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PropertyManagerComponent ]
+      declarations: [ PropertyManagerComponent ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

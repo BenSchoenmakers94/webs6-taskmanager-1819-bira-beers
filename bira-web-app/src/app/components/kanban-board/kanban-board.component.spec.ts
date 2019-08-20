@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { KanbanBoardComponent } from './kanban-board.component';
 
 describe('KanbanBoardComponent', () => {
@@ -8,7 +8,8 @@ describe('KanbanBoardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KanbanBoardComponent ]
+      declarations: [ KanbanBoardComponent ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
