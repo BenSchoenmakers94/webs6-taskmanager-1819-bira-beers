@@ -55,14 +55,23 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
   redraw() {
     this.workingObject.subscribe(object => {
       this.columnsList = [];
-      this.workableId = object[0].uid;
-      this.workingName = object[0].name;
+      if (object[0] === undefined) {
+        this.workableId = object.uid;
+      } else {
+        this.workableId = object[0].uid;
+      }
+      if (object[0] === undefined) {
+        this.workingName = object.name;
+      } else {
+        this.workingName = object[0].name;
+      }
       this.SubscribeColumn = this.store.getAllFromTypeSorted(this.textify.getTypeForId(this.columnProperty), 'sort');
       this.SubscribeColumn.pipe(takeUntil(this.unSubscribeColumn)).subscribe(x => {
         const newList = [];
         x.forEach(element => {
           newList.push({
             propertyName: element.name,
+            propertyId: element.uid,
             items: []
           });
         });
@@ -91,7 +100,7 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
           });
           y.forEach(element => {
             this.columnsList.forEach(object => {
-              if (object.propertyName === element[this.columnProperty]) {
+              if (object.propertyId === element[this.columnProperty]) {
                 let canAdd = true;
                 object.items.forEach(item => {
                   if (item.uid === element.uid) {
@@ -127,7 +136,7 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
       event.container.id.substring(event.container.id.lastIndexOf('-') + 1, event.container.id.length), 10) % this.columnsList.length;
     event.container.data.forEach(value => {
       const copy = JSON.parse(JSON.stringify(value));
-      copy[this.columnProperty] = this.columnsList[selector].propertyName;
+      copy[this.columnProperty] = this.columnsList[selector].propertyId;
       copy[this.textify.getIdForType(this.workableProperty)] = this.workableId;
       this.store.upsertDocument(this.moveableProperty, copy, copy.uid, true);
     });

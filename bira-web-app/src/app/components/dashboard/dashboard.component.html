@@ -4,11 +4,21 @@
       <app-chart [workingObject]="activeSprintForChart"></app-chart>
     </div>
   </mat-tab>
-  <mat-tab label="Kanban">
+  <mat-tab label="Active Sprint Taskboard">
     <div class="example-large-box mat-elevation-z4">
       <app-kanban-board [workingObject]="activeSprintForChart" [workableProperty]="'sprints'" [moveableProperty]="'userStories'"
       [columnProperty]="'stateId'">
     </app-kanban-board>
      </div>
   </mat-tab>
+  <ng-container *ngFor="let teamName of teamNames; index as i">
+    <mat-tab label={{teamName}}>
+      <div class="example-large-box mat-elevation-z4">
+        <app-kanban-board [workingObject]="teams[i]" [workableProperty]="'teams'" [moveableProperty]="'users'"
+        [columnProperty]="'roleId'">
+      </app-kanban-board>
+       </div>
+    </mat-tab>
+  </ng-container>
+  
 </mat-tab-group>

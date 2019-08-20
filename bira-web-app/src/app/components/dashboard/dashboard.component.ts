@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,17 +10,26 @@ import { Observable } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
 
-  public columnType: Observable<any>;
-  public moveables: Observable<any>;
   public activeSprintForChart: Observable<any>;
+  public teams: any[];
+  public teamNames: any[];
 
   constructor(private store: DatastoreService) {
   }
 
   ngOnInit() {
-    this.columnType = this.store.getAllFromTypeSorted('states', 'sort');
-    this.moveables = this.store.getAllFromType('userStories');
     this.activeSprintForChart = this.store.findObjectOfTypeWithConstraints('sprints', 'active', '==', true, 1);
+
+    this.teams = [];
+    this.teamNames = [];
+    this.store.getAllFromType('teams').pipe(
+      map(teams => {
+        teams.forEach(team => {
+          this.teams.push(this.store.findObjectOfType('teams', team['uid']));
+          this.teamNames.push(team['name']);
+        });
+      }
+      )).toPromise();
   }
 
 }
