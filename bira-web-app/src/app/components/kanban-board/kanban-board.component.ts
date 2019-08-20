@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef, DoCheck } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
@@ -13,20 +13,18 @@ import { NiceTextService } from 'src/app/services/nice-text.service';
 })
 export class KanbanBoardComponent implements OnInit, OnDestroy {
 
-  @Input() columnType: Observable<any>;
-  @Input() moveables: Observable<any>;
-  @Input() workingObject: Observable<any>;
+  @Input() workingObject: any;
   @Input() columnProperty: any;
   @Input() moveableProperty: any;
   @Input() workableProperty: any;
-  @Input() filterable?: any;
 
   public Object = Object;
   public columnsList: any[];
 
   private unSubscribeColumn: Subject<any>;
   private unSubscribeMoveable: Subject<any>;
-  private unSubscribeWorkable: Subject<any>;
+  private SubscribeColumn: Observable<any>;
+  private SubscribeMoveable: Observable<any>;
   private workableId: any;
 
   constructor(
@@ -37,7 +35,9 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.unSubscribeColumn = new Subject();
     this.unSubscribeMoveable = new Subject();
-    this.unSubscribeWorkable = new Subject();
+
+    this.SubscribeColumn = this.store.getAllFromTypeSorted(this.textify.getTypeForId(this.columnProperty), 'sort');
+    this.SubscribeMoveable = this.store.getAllFromType(this.moveableProperty);
     this.redraw();
   }
 
@@ -47,30 +47,16 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
 
     this.unSubscribeMoveable.next();
     this.unSubscribeMoveable.complete();
-
-    this.unSubscribeWorkable.next();
-    this.unSubscribeWorkable.complete();
   }
 
   redraw() {
     this.columnsList = [];
-    this.workingObject.pipe(takeUntil(this.unSubscribeWorkable),
-    map(objects => {
-      const filteredObjects = [];
-      objects.forEach(object => {
-          if (object[this.filterable]) {
-            filteredObjects.push(object);
-          }
-        });
-      return filteredObjects[filteredObjects.length - 1];
-    })).subscribe(workable => {
-      this.workableId = workable.uid;
-    });
-    this.columnType.pipe(takeUntil(this.unSubscribeColumn)).subscribe(x => {
+    this.workableId = this.workingObject['uid'];
+    this.SubscribeColumn.pipe(takeUntil(this.unSubscribeColumn)).subscribe(x => {
       const newList = [];
       x.forEach(element => {
         newList.push({
-          propertyName: element.name,
+          propertyName: element['name'],
           items: []
         });
       });
@@ -83,33 +69,34 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
       });
       this.columnsList = newList;
     });
-    this.moveables.pipe(takeUntil(this.unSubscribeMoveable),
-    map(objects => {
-      const filteredObjects = [];
-      objects.forEach(object => {
+
+    this.SubscribeMoveable.pipe(takeUntil(this.unSubscribeMoveable),
+      map(objects => {
+        const filteredObjects = [];
+        objects.forEach(object => {
           if (!object[this.textify.getIdForType(this.workableProperty)] || object[this.textify.getIdForType(this.workableProperty)] === this.workableId) {
             filteredObjects.push(object);
           }
         });
-      return filteredObjects;
-    })).subscribe(y => {
-      this.columnsList.forEach(listItem => {
-        listItem.items = [];
-      });
-      y.forEach(element => {
-        this.columnsList.forEach(object => {
-          if (object.propertyName === element[this.columnProperty]) {
-            let canAdd = true;
-            object.items.forEach(item => {
-              if (item.uid === element.uid) {
-                canAdd = false;
-              }
-            });
-            if (canAdd) { object.items.push(element); }
-          }
+        return filteredObjects;
+      })).subscribe(y => {
+        this.columnsList.forEach(listItem => {
+          listItem.items = [];
+        });
+        y.forEach(element => {
+          this.columnsList.forEach(object => {
+            if (object.propertyName === element[this.columnProperty]) {
+              let canAdd = true;
+              object.items.forEach(item => {
+                if (item.uid === element.uid) {
+                  canAdd = false;
+                }
+              });
+              if (canAdd) { object.items.push(element); }
+            }
+          });
         });
       });
-    });
   }
 
   toDetail(object: any) {

@@ -5,10 +5,12 @@
 <ng-template #activeParent>
     <div class="relative min-height">
         <app-data-table *ngIf="type" [type]="type" (selectionChanged)="selectionChangedHandler($event)"></app-data-table>
-        <button (click)="goToCreation()" class="positioned" mat-raised-button color="accent">
+        <ng-container *ngIf="type!=='archive'">
+          <button (click)="goToCreation()" class="positioned" mat-raised-button color="accent">
             <mat-icon>add</mat-icon>
             Create new {{type}}
         </button>
+        </ng-container>
     </div>
 </ng-template>
 

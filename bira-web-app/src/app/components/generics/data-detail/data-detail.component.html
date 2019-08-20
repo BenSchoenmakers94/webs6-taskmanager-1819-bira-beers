@@ -30,7 +30,7 @@
                 <div *ngIf="collection | async as items">
                         <form class="example-form">
                                 <mat-label>Choose {{textify.getNiceNameForId(displayedProperty)}}</mat-label>
-                                <mat-select [(value)]="selectedValue">
+                                <mat-select [(value)]="selectedValue" (selectionChange)="onChange($event.value)">
                                   <mat-option *ngFor="let item of items" value={{item.uid}}><b>{{item.name}}</b></mat-option>
                                 </mat-select>
                             </form>

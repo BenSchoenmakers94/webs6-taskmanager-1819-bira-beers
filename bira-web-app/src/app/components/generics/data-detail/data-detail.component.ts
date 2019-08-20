@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, DoCheck, AfterContentInit } from '@angular/core';
 import { NiceTextService } from 'src/app/services/nice-text.service';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { Observable } from 'rxjs';
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   templateUrl: './data-detail.component.html',
   styleUrls: ['./data-detail.component.sass']
 })
-export class DataDetailComponent implements OnInit, DoCheck {
+export class DataDetailComponent implements OnInit, AfterContentInit {
 
   @Input() selectedObject?: any;
   @Input() displayedProperty: any;
@@ -20,8 +20,6 @@ export class DataDetailComponent implements OnInit, DoCheck {
   public selectedValue: any;
   public bindableDate: any;
   public minDate: any;
-
-  private previousSelectedValue: any;
 
   constructor(
     public textify: NiceTextService,
@@ -36,7 +34,7 @@ export class DataDetailComponent implements OnInit, DoCheck {
     }
 
     if (this.inputType === 'boolean') {
-      this.selectedValue = this.selectedObject[this.displayedProperty] == true
+      this.selectedValue = (this.selectedObject[this.displayedProperty] === true);
     }
 
     if (this.inputType === 'date') {
@@ -45,15 +43,13 @@ export class DataDetailComponent implements OnInit, DoCheck {
     this.minDate = new Date();
   }
 
-  ngDoCheck() {
-    if (this.selectedValue && this.previousSelectedValue !== this.selectedValue) {
-      this.previousSelectedValue = this.selectedValue;
-      this.stateHasChanged(this.selectedValue);
-    }
+  ngAfterContentInit() {
+    this.stateHasChanged(this.selectedValue);
   }
 
   onChange(value: any) {
     this.selectedValue = value;
+    this.stateHasChanged(this.selectedValue);
   }
 
   onDateChange(value: any) {
@@ -61,6 +57,7 @@ export class DataDetailComponent implements OnInit, DoCheck {
       day: 'numeric', month: 'short', year: 'numeric'
     }).replace(/ /g, '-').replace(/\./g, '');
     this.bindableDate = value;
+    this.stateHasChanged(this.selectedValue);
   }
 
   stateHasChanged(valueChanged: any) {

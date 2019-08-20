@@ -15,6 +15,10 @@
             <span>Properties</span>
           </button>
         </ng-container>
+        <button [routerLink]="[ '/archive']" mat-menu-item>
+          <mat-icon>restore</mat-icon>
+          <span>Archive</span>
+        </button>
         <button *ngFor="let item of collections | async" [routerLink]="[ '/'+item.uid]" mat-menu-item>
           <span>{{textify.getNiceText(item.uid)}}</span>
         </button>

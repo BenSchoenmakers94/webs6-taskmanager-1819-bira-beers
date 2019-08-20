@@ -28,9 +28,15 @@ export class DataTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dataSource = new BindableDataSource(this.store, this.type);
-    this.store.getPropertiesOfType(this.type).pipe(takeUntil(this.unSubscribe)).subscribe(properties => {
-      this.displayedColumns = Object.getOwnPropertyNames(properties);
-    });
+    if (this.type === 'archive') {
+      this.store.getPropertiesOfType('userStories').pipe(takeUntil(this.unSubscribe)).subscribe(properties => {
+        this.displayedColumns = Object.getOwnPropertyNames(properties);
+      });
+    } else {
+      this.store.getPropertiesOfType(this.type).pipe(takeUntil(this.unSubscribe)).subscribe(properties => {
+        this.displayedColumns = Object.getOwnPropertyNames(properties);
+      });
+    }
   }
 
   ngOnDestroy() {
@@ -39,7 +45,11 @@ export class DataTableComponent implements OnInit, OnDestroy {
   }
 
   goToDetail(row: any) {
-    this.router.navigateByUrl(this.router.url + '/' + row.uid);
+    if(this.type === 'archive') {
+      this.router.navigateByUrl('/userStories/' + row.uid);
+    } else {
+      this.router.navigateByUrl(this.router.url + '/' + row.uid);
+    }
   }
 }
 
@@ -52,7 +62,13 @@ export class BindableDataSource extends DataSource<any> {
   }
 
   connect() {
-    this.dataSource = this.store.getAllFromType(this.type);
+    if (this.type === 'userStories') {
+      this.dataSource = this.store.findObjectOfTypeWithConstraints(this.type, 'isArchived', '==', false, -1);
+    } else if (this.type === 'archive') {
+      this.dataSource = this.store.findObjectOfTypeWithConstraints('userStories', 'isArchived', '==', true, -1);
+    } else {
+      this.dataSource = this.store.getAllFromType(this.type);
+    }
     return this.dataSource;
   }
 

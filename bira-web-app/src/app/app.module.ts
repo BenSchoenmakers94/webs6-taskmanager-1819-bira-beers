@@ -27,6 +27,8 @@ import { KanbanBoardComponent } from './components/kanban-board/kanban-board.com
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PropertyManagerComponent } from './components/property-manager/property-manager.component';
 import { ChartsModule } from 'ng2-charts';
+import { WrapperComponent } from './components/kanban-board/wrapper/wrapper.component';
+import { OrderByPipe } from './pipes/order-by.pipe';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { ChartsModule } from 'ng2-charts';
     EditComponent,
     ChartComponent,
     KanbanBoardComponent,
-    PropertyManagerComponent
+    PropertyManagerComponent,
+    WrapperComponent,
+    OrderByPipe
   ],
   entryComponents: [
     DataManagerComponent,

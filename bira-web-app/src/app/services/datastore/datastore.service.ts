@@ -58,6 +58,7 @@ export class DatastoreService {
 
   updateDocument(type: any, objectId: any, data: any, noNavigation?: any) {
     this.afs.collection(type).doc(objectId).set(data, { merge: true });
+
     if (!noNavigation) { this.router.navigateByUrl(this.router.url.substring(0, this.router.url.lastIndexOf('/'))); }
     this.notifier.notifyUser(
       'Succesfully edited: ' +
@@ -81,7 +82,9 @@ export class DatastoreService {
   }
 
   findObjectOfTypeWithConstraints(type: string, constraintOnProperty: string, operator: any, desiredValue: any, amountOfResults: any) {
-    return this.afs.collection(type, ref => ref.where(constraintOnProperty, operator, desiredValue).limit(amountOfResults)).valueChanges();
+    return amountOfResults > 1 ?
+      this.afs.collection(type, ref => ref.where(constraintOnProperty, operator, desiredValue).limit(amountOfResults)).valueChanges() :
+      this.afs.collection(type, ref => ref.where(constraintOnProperty, operator, desiredValue)).valueChanges();
   }
 
   validateObject(type: any, objectId, objectData: any, noNavigation?: any) {
@@ -121,6 +124,7 @@ export class DatastoreService {
           if (constraint.operator === 'is') {
             if (objectData[constraint.matchable]) {
               this._setUnique(type, constraint.matchable, objectId, objectData[constraint.matchable], false);
+              objectData['_UpdatedAt'] = new Date();
             }
           }
           if (constraint.operator === 'has') {
@@ -130,7 +134,19 @@ export class DatastoreService {
           }
           if (constraint.operator === 'new') {
             if (!objectData[constraint.matchable]) {
-              objectData[constraint.matchable] = constraint.matcher;
+              if (constraint.matcher === 'false') {
+                objectData[constraint.matchable] = false;
+              } else if (constraint.matcher === 'true') {
+                objectData[constraint.matchable] = true;
+              } else {
+                objectData[constraint.matchable] = constraint.matcher;
+              }
+            } else {
+              if (objectData[constraint.matchable] === 'false' || objectData[constraint.matchable] === '') {
+                objectData[constraint.matchable] = false;
+              } else if (objectData[constraint.matchable] === 'true') {
+                objectData[constraint.matchable] = true;
+              }
             }
           }
           if (constraint.operator === 'on') {

@@ -5,8 +5,8 @@
     </div>
   </mat-tab>
   <mat-tab label="Kanban">
-    <div class="example-large-box mat-elevation-z4">
-      <app-kanban-board [filterable]="'active'" [workingObject]="activeSprintForBoard" [workableProperty]="'sprints'" [moveableProperty]="'userStories'" [columnProperty]="'stateId'" [columnType]="columnType" [moveables]="moveables"></app-kanban-board>
-    </div>
+    <div class="example-large-box mat-elevation-z4" *ngIf="activeSprint">
+      <app-wrapper [workingObject]="activeSprint"></app-wrapper>
+     </div>
   </mat-tab>
 </mat-tab-group>
