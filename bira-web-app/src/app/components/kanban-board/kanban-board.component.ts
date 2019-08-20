@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -20,6 +20,7 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
 
   public Object = Object;
   public columnsList: any[];
+  public workingName: any;
 
   private unSubscribeColumn: Subject<any>;
   private unSubscribeMoveable: Subject<any>;
@@ -52,9 +53,10 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
   }
 
   redraw() {
-    this.workingObject.subscribe(sprint => {
+    this.workingObject.subscribe(object => {
       this.columnsList = [];
-      this.workableId = sprint[0].uid;
+      this.workableId = object[0].uid;
+      this.workingName = object[0].name;
       this.SubscribeColumn = this.store.getAllFromTypeSorted(this.textify.getTypeForId(this.columnProperty), 'sort');
       this.SubscribeColumn.pipe(takeUntil(this.unSubscribeColumn)).subscribe(x => {
         const newList = [];
