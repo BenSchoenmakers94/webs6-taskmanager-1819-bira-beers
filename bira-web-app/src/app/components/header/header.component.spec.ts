@@ -17,7 +17,7 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ HeaderComponent, DashboardComponent ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatMenuModule, MatSnackBarModule ],
+      imports: [RouterTestingModule.withRoutes([{path: 'dashboard', component: DashboardComponent}]), MatMenuModule, MatSnackBarModule ],
       providers: [
         { provide: AngularFireAuth, useValue: FireauthStub },
         { provide: AngularFirestore, useValue: FirestoreStub }

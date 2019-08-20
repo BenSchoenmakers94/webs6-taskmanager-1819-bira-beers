@@ -18,7 +18,7 @@ describe('DataDetailComponent', () => {
       providers: [
         { provide: AngularFirestore, useValue: FirestoreStub },
       ],
-      imports: [ RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatSnackBarModule ]
+      imports: [ RouterTestingModule.withRoutes([{path: 'dashboard', component: DashboardComponent}]), MatSnackBarModule ]
     })
     .compileComponents();
   }));

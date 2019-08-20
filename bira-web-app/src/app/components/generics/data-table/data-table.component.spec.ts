@@ -14,7 +14,7 @@ describe('DataTableComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DataTableComponent, DashboardComponent ],
-      imports: [ RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatTableModule, MatSnackBarModule ],
+      imports: [ RouterTestingModule.withRoutes([{path: 'dashboard', component: DashboardComponent}]), MatTableModule, MatSnackBarModule ],
       providers: [
         { provide: AngularFirestore, useValue: FirestoreStub },
       ],

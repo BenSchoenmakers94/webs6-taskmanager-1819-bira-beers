@@ -20,7 +20,7 @@ describe('ChartComponent', () => {
       providers: [
         { provide: AngularFirestore, useValue: FirestoreStub },
       ],
-      imports: [MatSnackBarModule, RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), ]
+      imports: [MatSnackBarModule, RouterTestingModule.withRoutes([{path: 'dashboard', component: DashboardComponent}]), ]
     })
     .compileComponents();
   }));

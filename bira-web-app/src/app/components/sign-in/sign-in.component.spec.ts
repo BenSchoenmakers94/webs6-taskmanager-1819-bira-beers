@@ -29,7 +29,7 @@ describe('SignInComponent', () => {
         { provide: AngularFirestore, useValue: FirestoreStub }
       ],
       imports: [
-        RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]),
+        RouterTestingModule.withRoutes([{path: 'dashboard', component: DashboardComponent}]),
         MatSnackBarModule
       ]
     })
