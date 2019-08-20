@@ -7,8 +7,14 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FirestoreStub } from 'src/fixtures/firestore-stub';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBarModule } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { DatastoreService } from 'src/app/services/datastore/datastore.service';
+
+const datastore = {
+  getAllFromTypeSorted: () => of(['users']),
+  getAllFromType: () => of(['users'])
+}
 
 describe('KanbanBoardComponent', () => {
   let component: KanbanBoardComponent;
@@ -19,6 +25,7 @@ describe('KanbanBoardComponent', () => {
       declarations: [ KanbanBoardComponent, DashboardComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
+        { provide: DatastoreService, useValue: datastore },
         { provide: AngularFireAuth, useValue: FireauthStub },
         { provide: AngularFirestore, useValue: FirestoreStub }
       ],
@@ -33,8 +40,8 @@ describe('KanbanBoardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(KanbanBoardComponent);
     component = fixture.componentInstance;
-    component.columnProperty = 'column name';
-    component.workingObject = Observable.of({ uid: 'test' });
+    component.columnProperty = 'userId';
+    component.workingObject = Observable.of(['test']);
     fixture.detectChanges();
   });
 

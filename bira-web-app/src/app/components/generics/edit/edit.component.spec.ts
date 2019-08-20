@@ -15,7 +15,7 @@ describe('EditComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ EditComponent, DashboardComponent ],
-      imports: [ RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatSnackBarModule ],
+      imports: [ RouterTestingModule.withRoutes([{path: 'dashboard', component: DashboardComponent}]), MatSnackBarModule ],
       providers: [
         { provide: AngularFirestore, useValue: FirestoreStub },
         { provide: ActivatedRoute, useValue: {

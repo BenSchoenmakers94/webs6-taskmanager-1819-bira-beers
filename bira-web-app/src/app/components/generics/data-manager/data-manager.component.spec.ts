@@ -12,7 +12,7 @@ describe('DataManagerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DataManagerComponent, DashboardComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [ RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), ]
+      imports: [ RouterTestingModule.withRoutes([{path: 'dashboard', component: DashboardComponent}]), ]
     })
     .compileComponents();
   }));

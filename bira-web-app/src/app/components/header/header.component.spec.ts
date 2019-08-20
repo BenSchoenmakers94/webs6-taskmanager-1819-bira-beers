@@ -8,7 +8,12 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FirestoreStub } from 'src/fixtures/firestore-stub';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { of } from 'rxjs';
+import { DatastoreService } from 'src/app/services/datastore/datastore.service';
 
+const datastore = {
+  getAllCollections: () => of([{ payload: {doc: {id: 'test'}}} ])
+}
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
@@ -17,8 +22,11 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ HeaderComponent, DashboardComponent ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatMenuModule, MatSnackBarModule ],
+      imports: [
+         RouterTestingModule.withRoutes([{path: 'dashboard', component: DashboardComponent}]),
+          MatMenuModule, MatSnackBarModule ],
       providers: [
+        { provide: DatastoreService, useValue: datastore },
         { provide: AngularFireAuth, useValue: FireauthStub },
         { provide: AngularFirestore, useValue: FirestoreStub }
       ]
