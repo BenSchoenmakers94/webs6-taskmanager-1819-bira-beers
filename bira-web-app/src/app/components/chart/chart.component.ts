@@ -47,7 +47,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       if (workable[0]) {
         this.showChart = true;
         this.calculateChartData(workable[0]);
-        
+
       } else {
         this.showChart = false;
       }
@@ -90,7 +90,11 @@ export class ChartComponent implements OnInit, OnDestroy {
     const optimumPerDay = totalPoints / daysDiff;
     let counter = 0;
     for (let i = 0; i < daysDiff + 1; i++) {
-      optimal.data.push(totalPoints - counter);
+      if (totalPoints - counter < 0) {
+        optimal.data.push(0);
+      } else {
+        optimal.data.push(totalPoints - counter);
+      }
       counter += optimumPerDay;
     }
     return optimal;

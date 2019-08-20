@@ -37,8 +37,6 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
     this.unSubscribeColumn = new Subject();
     this.unSubscribeMoveable = new Subject();
     this.unSubscribeWorkable = new Subject();
-
-    this.SubscribeColumn = this.store.getAllFromTypeSorted(this.textify.getTypeForId(this.columnProperty), 'sort');
     this.redraw();
   }
 
@@ -54,55 +52,55 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
   }
 
   redraw() {
-    this.columnsList = [];
-    this.SubscribeColumn.pipe(takeUntil(this.unSubscribeColumn)).subscribe(x => {
-      const newList = [];
-      x.forEach(element => {
-        newList.push({
-          propertyName: element.name,
-          items: []
-        });
-      });
-      newList.forEach(newLister => {
-        this.columnsList.forEach(list => {
-          if (newLister.propertyName === list.propertyName) {
-            newLister.items = list.items;
-          }
-        });
-      });
-      this.columnsList = newList;
-    });
-
     this.workingObject.subscribe(sprint => {
+      this.columnsList = [];
       this.workableId = sprint[0].uid;
-      this.SubscribeMoveable = this.store.getAllFromType(this.moveableProperty);
-      this.SubscribeMoveable.pipe(takeUntil(this.unSubscribeMoveable),
-      map(objects => {
-        const filteredObjects = [];
-        objects.forEach(object => {
-          if (!object[this.textify.getIdForType(this.workableProperty)] || object[this.textify.getIdForType(this.workableProperty)] === this.workableId) {
-            filteredObjects.push(object);
-          }
+      this.SubscribeColumn = this.store.getAllFromTypeSorted(this.textify.getTypeForId(this.columnProperty), 'sort');
+      this.SubscribeColumn.pipe(takeUntil(this.unSubscribeColumn)).subscribe(x => {
+        const newList = [];
+        x.forEach(element => {
+          newList.push({
+            propertyName: element.name,
+            items: []
+          });
         });
-        return filteredObjects;
-      })).subscribe(y => {
-        this.columnsList.forEach(listItem => {
-          listItem.items = [];
-        });
-        y.forEach(element => {
-          this.columnsList.forEach(object => {
-            if (object.propertyName === element[this.columnProperty]) {
-              let canAdd = true;
-              object.items.forEach(item => {
-                if (item.uid === element.uid) {
-                  canAdd = false;
-                }
-              });
-              if (canAdd) { object.items.push(element); }
+        newList.forEach(newLister => {
+          this.columnsList.forEach(list => {
+            if (newLister.propertyName === list.propertyName) {
+              newLister.items = list.items;
             }
           });
         });
+        this.columnsList = newList;
       });
+      this.SubscribeMoveable = this.store.getAllFromType(this.moveableProperty);
+      this.SubscribeMoveable.pipe(takeUntil(this.unSubscribeMoveable),
+        map(objects => {
+          const filteredObjects = [];
+          objects.forEach(object => {
+            if (!object[this.textify.getIdForType(this.workableProperty)] || object[this.textify.getIdForType(this.workableProperty)] === this.workableId) {
+              filteredObjects.push(object);
+            }
+          });
+          return filteredObjects;
+        })).subscribe(y => {
+          this.columnsList.forEach(listItem => {
+            listItem.items = [];
+          });
+          y.forEach(element => {
+            this.columnsList.forEach(object => {
+              if (object.propertyName === element[this.columnProperty]) {
+                let canAdd = true;
+                object.items.forEach(item => {
+                  if (item.uid === element.uid) {
+                    canAdd = false;
+                  }
+                });
+                if (canAdd) { object.items.push(element); }
+              }
+            });
+          });
+        });
     });
   }
 
