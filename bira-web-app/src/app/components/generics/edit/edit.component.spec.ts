@@ -6,7 +6,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FirestoreStub } from 'src/fixtures/firestore-stub';
 import { MatSnackBarModule } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { DashboardComponent } from '../../dashboard/dashboard.component';
 
 describe('EditComponent', () => {
   let component: EditComponent;
@@ -14,8 +14,8 @@ describe('EditComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditComponent ],
-      imports: [ RouterTestingModule, MatSnackBarModule ],
+      declarations: [ EditComponent, DashboardComponent ],
+      imports: [ RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatSnackBarModule ],
       providers: [
         { provide: AngularFirestore, useValue: FirestoreStub },
         { provide: ActivatedRoute, useValue: {

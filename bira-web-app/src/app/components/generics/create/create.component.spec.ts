@@ -7,6 +7,7 @@ import { FirestoreStub } from 'src/fixtures/firestore-stub';
 import { MatSnackBarModule } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { DashboardComponent } from '../../dashboard/dashboard.component';
 
 describe('CreateComponent', () => {
   let component: CreateComponent;
@@ -14,7 +15,7 @@ describe('CreateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateComponent ],
+      declarations: [ CreateComponent, DashboardComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: AngularFirestore, useValue: FirestoreStub },
@@ -24,7 +25,7 @@ describe('CreateComponent', () => {
             }
         } }
       ],
-      imports: [ RouterTestingModule, MatSnackBarModule ]
+      imports: [ RouterTestingModule.withRoutes([{path: 'dashboard', component: DashboardComponent}]), MatSnackBarModule ]
     })
     .compileComponents();
   }));

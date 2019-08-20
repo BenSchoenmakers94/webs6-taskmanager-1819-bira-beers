@@ -5,6 +5,7 @@ import { MatTableModule, MatSnackBarModule } from '@angular/material';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FirestoreStub } from 'src/fixtures/firestore-stub';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DashboardComponent } from '../../dashboard/dashboard.component';
 
 describe('DataTableComponent', () => {
   let component: DataTableComponent;
@@ -12,8 +13,8 @@ describe('DataTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DataTableComponent ],
-      imports: [ RouterTestingModule, MatTableModule, MatSnackBarModule ],
+      declarations: [ DataTableComponent, DashboardComponent ],
+      imports: [ RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatTableModule, MatSnackBarModule ],
       providers: [
         { provide: AngularFirestore, useValue: FirestoreStub },
       ],

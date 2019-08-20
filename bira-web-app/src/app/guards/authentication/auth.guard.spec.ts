@@ -7,16 +7,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FirestoreStub } from 'src/fixtures/firestore-stub';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatSnackBarModule } from '@angular/material';
+import { DashboardComponent } from 'src/app/components/dashboard/dashboard.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('AuthGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      declarations: [ DashboardComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ],
       providers: [
         AuthGuard,
         { provide: AngularFireAuth, useValue: FireauthStub },
         { provide: AngularFirestore, useValue: FirestoreStub }
       ],
-      imports: [ RouterTestingModule, MatSnackBarModule ]
+      imports: [ RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatSnackBarModule ]
     });
   });
 

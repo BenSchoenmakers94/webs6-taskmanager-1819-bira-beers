@@ -7,6 +7,7 @@ import 'rxjs/add/observable/of';
 import { MatSnackBarModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FirestoreStub } from 'src/fixtures/firestore-stub';
+import { DashboardComponent } from 'src/app/components/dashboard/dashboard.component';
 
 describe('ChartComponent', () => {
   let component: ChartComponent;
@@ -14,12 +15,12 @@ describe('ChartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChartComponent ],
+      declarations: [ ChartComponent, DashboardComponent ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         { provide: AngularFirestore, useValue: FirestoreStub },
       ],
-      imports: [ MatSnackBarModule, RouterTestingModule ]
+      imports: [MatSnackBarModule, RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), ]
     })
     .compileComponents();
   }));

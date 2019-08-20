@@ -7,6 +7,7 @@ import { FireauthStub } from 'src/fixtures/fireauth-stub';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FirestoreStub } from 'src/fixtures/firestore-stub';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -14,9 +15,9 @@ describe('HeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ],
+      declarations: [ HeaderComponent, DashboardComponent ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule, MatMenuModule, MatSnackBarModule ],
+      imports: [RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatMenuModule, MatSnackBarModule ],
       providers: [
         { provide: AngularFireAuth, useValue: FireauthStub },
         { provide: AngularFirestore, useValue: FirestoreStub }

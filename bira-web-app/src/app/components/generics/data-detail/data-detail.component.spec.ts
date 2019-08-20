@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FirestoreStub } from 'src/fixtures/firestore-stub';
 import { MatSnackBarModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DashboardComponent } from '../../dashboard/dashboard.component';
 
 describe('DataDetailComponent', () => {
   let component: DataDetailComponent;
@@ -12,12 +13,12 @@ describe('DataDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DataDetailComponent ],
+      declarations: [ DataDetailComponent , DashboardComponent],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         { provide: AngularFirestore, useValue: FirestoreStub },
       ],
-      imports: [ RouterTestingModule, MatSnackBarModule ]
+      imports: [ RouterTestingModule.withRoutes([{path: ' dashboard', component: DashboardComponent}]), MatSnackBarModule ]
     })
     .compileComponents();
   }));
