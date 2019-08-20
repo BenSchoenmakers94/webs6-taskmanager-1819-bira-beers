@@ -13,7 +13,7 @@ import { NiceTextService } from 'src/app/services/nice-text.service';
 })
 export class KanbanBoardComponent implements OnInit, OnDestroy {
 
-  @Input() workingObject: any;
+  @Input() workingObject: Observable<any>;
   @Input() columnProperty: any;
   @Input() moveableProperty: any;
   @Input() workableProperty: any;
@@ -23,6 +23,7 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
 
   private unSubscribeColumn: Subject<any>;
   private unSubscribeMoveable: Subject<any>;
+  private unSubscribeWorkable: Subject<any>;
   private SubscribeColumn: Observable<any>;
   private SubscribeMoveable: Observable<any>;
   private workableId: any;
@@ -35,9 +36,9 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.unSubscribeColumn = new Subject();
     this.unSubscribeMoveable = new Subject();
+    this.unSubscribeWorkable = new Subject();
 
     this.SubscribeColumn = this.store.getAllFromTypeSorted(this.textify.getTypeForId(this.columnProperty), 'sort');
-    this.SubscribeMoveable = this.store.getAllFromType(this.moveableProperty);
     this.redraw();
   }
 
@@ -47,16 +48,18 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
 
     this.unSubscribeMoveable.next();
     this.unSubscribeMoveable.complete();
+
+    this.unSubscribeWorkable.next();
+    this.unSubscribeWorkable.complete();
   }
 
   redraw() {
     this.columnsList = [];
-    this.workableId = this.workingObject['uid'];
     this.SubscribeColumn.pipe(takeUntil(this.unSubscribeColumn)).subscribe(x => {
       const newList = [];
       x.forEach(element => {
         newList.push({
-          propertyName: element['name'],
+          propertyName: element.name,
           items: []
         });
       });
@@ -70,14 +73,30 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
       this.columnsList = newList;
     });
 
-    this.SubscribeMoveable.pipe(takeUntil(this.unSubscribeMoveable),
+    this.workingObject.pipe(
       map(objects => {
+        if (this.workableProperty !== 'sprints') { return objects; }
+        const filteredObjects = [];
+        objects.forEach(object => {
+          if (object.active) {
+            filteredObjects.push(object);
+          }
+        });
+        return filteredObjects;
+      })
+    ).subscribe(sprints => {
+      this.workableId = sprints[0].uid;
+      this.SubscribeMoveable = this.store.getAllFromType(this.moveableProperty);
+      this.SubscribeMoveable.pipe(takeUntil(this.unSubscribeMoveable),
+      map(objects => {
+        console.log(objects);
         const filteredObjects = [];
         objects.forEach(object => {
           if (!object[this.textify.getIdForType(this.workableProperty)] || object[this.textify.getIdForType(this.workableProperty)] === this.workableId) {
             filteredObjects.push(object);
           }
         });
+        console.log(filteredObjects);
         return filteredObjects;
       })).subscribe(y => {
         this.columnsList.forEach(listItem => {
@@ -97,6 +116,7 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
           });
         });
       });
+    });
   }
 
   toDetail(object: any) {
