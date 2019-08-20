@@ -1,9 +1,0 @@
-<div class="example-box" *ngIf="workingObject | async as sprints">
-  <ng-container *ngFor="let sprint of sprints | orderBy:'_UpdatedAt'; let i=index">
-    <ng-container *ngIf="i+1==sprints.length">
-      <app-kanban-board [workingObject]="sprint" [workableProperty]="'sprints'" [moveableProperty]="'userStories'"
-        [columnProperty]="'stateId'">
-      </app-kanban-board>
-    </ng-container>
-  </ng-container>
-</div>
