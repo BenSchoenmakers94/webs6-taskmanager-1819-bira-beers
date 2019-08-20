@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/authentication/auth.guard';
 import { SignInComponent } from './components/sign-in/sign-in.component';
@@ -11,7 +10,6 @@ import { DataManagerComponent } from './components/generics/data-manager/data-ma
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
-  { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'properties', component: PropertyManagerComponent, canActivate: [AuthGuard, IsAdminGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'archive', component: DataManagerComponent, canActivate: [AuthGuard] },

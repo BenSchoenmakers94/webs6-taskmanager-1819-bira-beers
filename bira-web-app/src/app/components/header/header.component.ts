@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public enabled = false;
 
   private unSubscribe = new Subject();
-  
+
   constructor(
     public authService: AuthService,
     public textify: NiceTextService,

@@ -9,7 +9,6 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -33,7 +32,6 @@ import { OrderByPipe } from './pipes/order-by.pipe';
 @NgModule({
   declarations: [
     AppComponent,
-    UserProfileComponent,
     DashboardComponent,
     HeaderComponent,
     FooterComponent,

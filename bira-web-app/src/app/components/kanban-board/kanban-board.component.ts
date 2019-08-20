@@ -73,19 +73,8 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
       this.columnsList = newList;
     });
 
-    this.workingObject.pipe(
-      map(objects => {
-        if (this.workableProperty !== 'sprints') { return objects; }
-        const filteredObjects = [];
-        objects.forEach(object => {
-          if (object.active) {
-            filteredObjects.push(object);
-          }
-        });
-        return filteredObjects;
-      })
-    ).subscribe(sprints => {
-      this.workableId = sprints[0].uid;
+    this.workingObject.subscribe(sprint => {
+      this.workableId = sprint[0].uid;
       this.SubscribeMoveable = this.store.getAllFromType(this.moveableProperty);
       this.SubscribeMoveable.pipe(takeUntil(this.unSubscribeMoveable),
       map(objects => {

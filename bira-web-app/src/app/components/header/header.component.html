@@ -43,7 +43,7 @@
         <mat-icon>person</mat-icon>
       </button>
       <mat-menu #menuAuth="matMenu">
-        <button [routerLink]="[ '/profile']" mat-menu-item>
+        <button *ngIf="authService.userLogged | async as user" [routerLink]="[ '/users/'+user.uid]" mat-menu-item>
           <span>My Profile</span>
         </button>
         <button (click)="authService.signOut()" mat-menu-item>

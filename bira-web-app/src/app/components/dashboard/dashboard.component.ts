@@ -12,7 +12,6 @@ export class DashboardComponent implements OnInit {
   public columnType: Observable<any>;
   public moveables: Observable<any>;
   public activeSprintForChart: Observable<any>;
-  public activeSprint: Observable<any>;
 
   constructor(private store: DatastoreService) {
   }
@@ -21,7 +20,6 @@ export class DashboardComponent implements OnInit {
     this.columnType = this.store.getAllFromTypeSorted('states', 'sort');
     this.moveables = this.store.getAllFromType('userStories');
     this.activeSprintForChart = this.store.findObjectOfTypeWithConstraints('sprints', 'active', '==', true, 1);
-    this.activeSprint = this.store.getAllFromType('sprints');
   }
 
 }
