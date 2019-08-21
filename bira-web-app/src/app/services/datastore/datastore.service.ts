@@ -144,6 +144,7 @@ export class DatastoreService {
             } else {
               if (objectData[constraint.matchable] === 'false' || objectData[constraint.matchable] === '') {
                 objectData[constraint.matchable] = false;
+
               } else if (objectData[constraint.matchable] === 'true') {
                 objectData[constraint.matchable] = true;
               }
@@ -161,7 +162,16 @@ export class DatastoreService {
               }
             }
           }
-          });
+          if (constraint.operator === 'reset') {
+            if (objectData[constraint.matchable] === false) {
+              objectData['stateId'] = 'Backlog';
+            } else {
+              objectData['userId'] = '';
+              objectData['sprintId'] = '';
+              objectData['stateId'] = '';
+            }
+          }
+        });
         if (canAdd) { this.updateDocument(type, objectId, objectData, noNavigation); }
       });
   }
