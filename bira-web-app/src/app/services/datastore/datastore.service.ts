@@ -155,8 +155,13 @@ export class DatastoreService {
                 objectData[constraint.matchable] = '';
               }
             }
+            if (objectData['roleId'] === constraint.matcher) {
+              if (objectData[constraint.matchable]) {
+                objectData[constraint.matchable] = '';
+              }
+            }
           }
-        });
+          });
         if (canAdd) { this.updateDocument(type, objectId, objectData, noNavigation); }
       });
   }
