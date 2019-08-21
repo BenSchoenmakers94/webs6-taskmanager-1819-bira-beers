@@ -4,53 +4,68 @@
     </mat-card-header>
     <ng-container *ngIf="editable; then edit; else viewOnly"></ng-container>
     <ng-template class="centered" #edit>
-            <ng-template [ngIf]="inputType == 'string'">
-                    <form class="example-form">
-                        <mat-form-field class="example-full-width">
-                            <input matInput (input)="onChange($event.target.value)" placeholder="Fill out {{textify.getNiceNameForId(displayedProperty)}}" value={{selectedValue}}>
-                        </mat-form-field>
-                    </form>
-            </ng-template>
-            <ng-template [ngIf]="inputType === 'number'">
-                    <mat-label>Select the amount of {{textify.getNiceNameForId(displayedProperty)}}</mat-label>
-                    <br>
-                    <mat-slider
-                            thumbLabel
-                            [displayWith]="formatLabel"
-                            tickInterval="1"
-                            min="1"
-                            max="20"
-                            [(value)]="selectedValue"
-                            (change)="onChange($event.value)">
-                    </mat-slider>
-                    <br>
-                    <mat-label>Current {{textify.getNiceNameForId(displayedProperty)}}: {{selectedValue}} </mat-label>
-            </ng-template>
-            <ng-template [ngIf]="inputType == 'one'">
+        <ng-template [ngIf]="inputType == 'string'">
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                    <input matInput (input)="onChange($event.target.value)"
+                        placeholder="Fill out {{textify.getNiceNameForId(displayedProperty)}}" value={{selectedValue}}>
+                </mat-form-field>
+            </form>
+        </ng-template>
+        <ng-template [ngIf]="inputType === 'number'">
+            <mat-label>Select the amount of {{textify.getNiceNameForId(displayedProperty)}}</mat-label>
+            <br>
+            <mat-slider thumbLabel [displayWith]="formatLabel" tickInterval="1" min="1" max="20"
+                [(value)]="selectedValue" (change)="onChange($event.value)">
+            </mat-slider>
+            <br>
+            <mat-label>Current {{textify.getNiceNameForId(displayedProperty)}}: {{selectedValue}} </mat-label>
+        </ng-template>
+        <ng-template [ngIf]="inputType == 'one'">
+            <ng-container *ngIf="displayedProperty=='stateId'; then thenTemplate; else elseTemplate"></ng-container>
+            <ng-template #thenTemplate>
                 <div *ngIf="collection | async as items">
-                        <form class="example-form">
-                                <mat-label>Choose {{textify.getNiceNameForId(displayedProperty)}}</mat-label>
-                                <mat-select [(value)]="selectedValue" (selectionChange)="onChange($event.value)">
-                                  <mat-option *ngFor="let item of items" value={{item.uid}}><b>{{item.name}}</b></mat-option>
-                                </mat-select>
-                            </form>
+                    <form class="example-form">
+                        <mat-label>{{textify.getNiceNameForId(displayedProperty)}}</mat-label>
+                        <mat-select [disabled]="true" [(value)]="selectedValue"
+                            (selectionChange)="onChange($event.value)">
+                            <mat-option *ngFor="let item of items" value={{item.uid}}><b>{{item.name}}</b></mat-option>
+                        </mat-select>
+                    </form>
                 </div>
             </ng-template>
-            <ng-template [ngIf]="inputType == 'date'">
-                    <mat-form-field>
-                            <input matInput [min]="minDate" [(value)]="bindableDate" [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="onDateChange($event.value)">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field>
+            <ng-template #elseTemplate>
+                <div *ngIf="collection | async as items">
+                    <form class="example-form">
+                        <mat-label>Choose {{textify.getNiceNameForId(displayedProperty)}}</mat-label>
+                        <mat-select [(value)]="selectedValue" (selectionChange)="onChange($event.value)">
+                            <mat-option *ngFor="let item of items" value={{item.uid}}><b>{{item.name}}</b></mat-option>
+                        </mat-select>
+                    </form>
+                </div>
             </ng-template>
-            <ng-template [ngIf]="inputType == 'boolean'">
-                    <mat-slide-toggle
-                    [color]="accent"
-                    [checked]="selectedValue"
-                    (change)="onChange($event.checked)">
-                  Slide to activate!
-                </mat-slide-toggle>
+        </ng-template>
+        <ng-template [ngIf]="inputType == 'date'">
+            <mat-form-field>
+                <input matInput [min]="minDate" [(value)]="bindableDate" [matDatepicker]="picker"
+                    placeholder="Choose a date" (dateChange)="onDateChange($event.value)">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </ng-template>
+        <ng-template [ngIf]="inputType == 'boolean'">
+            <ng-container *ngIf="selectedObject; then thenTemplate; else elseTemplate"></ng-container>
+            <ng-template #thenTemplate>
+                    <mat-slide-toggle [color]="accent" [checked]="selectedValue" (change)="onChange($event.checked)">
+                            Slide to activate!
+                        </mat-slide-toggle>
             </ng-template>
+            <ng-template #elseTemplate>
+                    <mat-slide-toggle [disabled]="true" [color]="accent" [checked]="selectedValue" (change)="onChange($event.checked)">
+                            Slide to activate!
+                        </mat-slide-toggle>
+            </ng-template>
+        </ng-template>
     </ng-template>
     <ng-template #viewOnly>
         <h1>{{selectedObject?.displayedProperty}}</h1>

@@ -7,7 +7,7 @@
   <mat-tab label="Active Sprint Taskboard">
     <div class="example-large-box mat-elevation-z4">
       <app-kanban-board [workingObject]="activeSprintForChart" [workableProperty]="'sprints'" [moveableProperty]="'userStories'"
-      [columnProperty]="'stateId'">
+      [columnProperty]="'stateId'" [includedProperty]="'userId'">
     </app-kanban-board>
      </div>
   </mat-tab>

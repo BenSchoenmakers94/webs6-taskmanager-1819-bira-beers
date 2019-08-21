@@ -164,7 +164,9 @@ export class DatastoreService {
           }
           if (constraint.operator === 'reset') {
             if (objectData[constraint.matchable] === false) {
-              objectData['stateId'] = 'Backlog';
+              if (objectData[constraint.matchable] === '') {
+                objectData['stateId'] = 'Backlog';
+              }
             } else {
               objectData['userId'] = '';
               objectData['sprintId'] = '';

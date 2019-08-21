@@ -17,14 +17,17 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
   @Input() columnProperty: any;
   @Input() moveableProperty: any;
   @Input() workableProperty: any;
+  @Input() includedProperty?: any;
 
   public Object = Object;
   public columnsList: any[];
   public workingName: any;
+  public collection: Observable<any>;
 
   private unSubscribeColumn: Subject<any>;
   private unSubscribeMoveable: Subject<any>;
   private unSubscribeWorkable: Subject<any>;
+  private unSubscribeIncluded: Subject<any>;
   private SubscribeColumn: Observable<any>;
   private SubscribeMoveable: Observable<any>;
   private workableId: any;
@@ -38,6 +41,7 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
     this.unSubscribeColumn = new Subject();
     this.unSubscribeMoveable = new Subject();
     this.unSubscribeWorkable = new Subject();
+    this.unSubscribeIncluded = new Subject();
     this.redraw();
   }
 
@@ -50,6 +54,9 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
 
     this.unSubscribeWorkable.next();
     this.unSubscribeWorkable.complete();
+
+    this.unSubscribeIncluded.next();
+    this.unSubscribeIncluded.complete();
   }
 
   redraw() {
@@ -111,12 +118,20 @@ export class KanbanBoardComponent implements OnInit, OnDestroy {
               }
             });
           });
+          if (this.includedProperty) {
+            this.collection = this.store.getAllFromType(this.textify.getTypeForId(this.includedProperty));
+          }
         });
     });
   }
 
   toDetail(object: any) {
     this.router.navigateByUrl('/' + this.moveableProperty + '/' + object.uid);
+  }
+
+  onChange(event: any, data: any) {
+    data[this.includedProperty] = event;
+    this.store.upsertDocument(this.moveableProperty, data, data.uid, true);
   }
 
   drop(event: CdkDragDrop<string[]>) {

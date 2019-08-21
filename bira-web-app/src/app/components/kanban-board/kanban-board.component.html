@@ -3,7 +3,18 @@
   <div *ngFor="let object of columnsList" class="sizing">
     <h2>{{object.propertyName}}</h2>
     <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" [cdkDropListData]="object.items">
-      <div class="example-box" *ngFor="let item of object.items" (dblclick)="toDetail(item)" cdkDrag>{{item.name}}</div>
+      <div class="example-box" *ngFor="let item of object.items" (dblclick)="toDetail(item)" cdkDrag>{{item.name}}
+        <ng-container *ngIf="includedProperty">
+            <div *ngIf="collection | async as included">
+                <form class="example-form">
+                    <mat-label>Choose {{textify.getNiceNameForId(includedProperty)}}</mat-label>
+                    <mat-select [(value)]="item.userId" (selectionChange)="onChange($event.value, item)">
+                        <mat-option *ngFor="let include of included" value={{include.uid}}><b>{{include.name}}</b></mat-option>
+                    </mat-select>
+                </form>
+            </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>
